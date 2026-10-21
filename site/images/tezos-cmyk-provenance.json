@@ -1,0 +1,16 @@
+{
+  "asset": "tezos-cmyk.svg",
+  "source": "Noto Sans Regular, U+A729",
+  "source_font_sha256": "89c3c497f618fdaa0b2d1e98fef93582f28c71debd2c4a8cdf41f190ced2909d",
+  "source_upstream": "https://github.com/notofonts/noto-fonts",
+  "license": "SIL OFL 1.1; see TEZOS-MARK-LICENSE.txt",
+  "fonttools": "4.67.0",
+  "glyph": "uniA729",
+  "viewBox": [
+    -16.0,
+    -684.0,
+    825.0307692307692,
+    950.031746031746
+  ],
+  "note": "The same glyph previously rendered by the browser is outlined to eliminate platform-dependent font leading. All three CMYK layers are included in the bounds."
+}

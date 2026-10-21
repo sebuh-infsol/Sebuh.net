@@ -114,8 +114,9 @@ section{padding-bottom:clamp(72px,9vw,128px)}
 .cmyk-num .plate{inset:.12em}
 .cmyk-num .plate-m{translate:.036em .025em}.cmyk-num .plate-y{translate:-.031em -.023em}
 .plate-c{color:var(--accent)}.plate-m{color:var(--accent2)}.plate-y{color:var(--yellow)}
-.big-glyph{font-size:clamp(160px,20vw,320px)}
-.field-note .big-glyph{margin-bottom:20px}
+.hero-mark{display:grid;place-items:center;width:100%;height:clamp(260px,45vw,360px);position:relative}
+.hero-logo{display:block;width:100%;height:100%;object-fit:contain;object-position:center top;position:absolute;inset:0}
+@media(min-width:1051px){@supports(grid-template-rows:subgrid){.hero{grid-template-rows:auto auto auto auto;row-gap:20px}.hero>div,.hero>.field-note{display:grid;grid-row:span 4;grid-template-rows:subgrid;row-gap:20px}.hero h1,.hero .lead,.hero .note{margin-bottom:0}.hero .note{margin-top:0}.hero .actions{align-self:start}.hero-mark{height:auto;min-height:0;position:relative;display:block}.hero-mark .hero-logo{position:absolute;inset:0}}}
 
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 

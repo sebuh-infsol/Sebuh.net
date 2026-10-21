@@ -104,10 +104,27 @@ test('hero field-note starts level with the headline instead of bottom-aligning 
   assert.doesNotMatch(rule,/align-self:end/);
 });
 
-test('hero Tezos logo scales prominently on desktop without oversizing mobile',()=>{
+test('hero logo uses tightly bounded vector art without the field-notes kicker',()=>{
+  const html=readFileSync(new URL('index.html',root),'utf8');
+  assert.doesNotMatch(html,/Field notes · Sebuh\.net \/ Tezos/);
+  assert.match(html,/<img[^>]+class="hero-logo"[^>]+src="\.\/images\/tezos-cmyk\.svg"/);
+  const path=new URL('images/tezos-cmyk.svg',root);
+  assert.ok(existsSync(path),'bounded artwork has not been generated');
+  const svg=readFileSync(path,'utf8');
+  assert.equal([...svg.matchAll(/<path\b/g)].length,3);
+  assert.match(svg,/viewBox="[-\d. ]+"/);
+  assert.doesNotMatch(svg,/<script|<text|<foreignObject|(?:href|src)=/);
+  assert.ok(existsSync(new URL('images/TEZOS-MARK-LICENSE.txt',root)));
+});
+
+test('desktop logo is contained in the same grid row as the complete headline without drawing a guide',()=>{
   const css=readFileSync(new URL('style.css',root),'utf8');
-  assert.match(css,/\.big-glyph\{font-size:clamp\(160px,20vw,320px\)\}/);
-  assert.match(css,/\.field-note \.big-glyph\{margin-bottom:20px\}/);
+  assert.match(css,/\.hero-logo\{display:block;width:100%;height:100%;object-fit:contain;object-position:center top;position:absolute;inset:0\}/);
+  assert.match(css,/grid-template-rows:subgrid/);
+  assert.match(css,/\.hero-mark\{height:auto;min-height:0;position:relative;display:block\}/);
+  assert.match(css,/\.hero-mark \.hero-logo\{position:absolute;inset:0\}/);
+  const markRules=[...css.matchAll(/\.hero-mark\{([^}]+)\}/g)].map(m=>m[1]).join(';');
+  assert.doesNotMatch(markRules,/border:|outline:|overflow:hidden|clip-path/);
 });
 
 test('page includes accessible controls and only local assets', () => {

@@ -61,6 +61,15 @@ polled or retried.
 Delegate / Stake / Donate remain directly after the hero. Staking is
 explicitly unavailable in the connector, not a working form.
 
+The hero Tezos mark is a tightly bounded, self-hosted SVG of the same Noto Sans
+U+A729 glyph previously selected by the browser, with all three CMYK layers.
+This avoids font-leading/descender overflow and platform-dependent glyph fallback.
+On desktop, CSS subgrid puts its invisible containment area in the same row as
+the entire left headline; object-fit preserves the full artwork inside that band,
+without clipping, borders, outlines or layout JavaScript. Smaller screens retain
+a stacked, contained mark. The source-font hash, outline provenance and SIL OFL
+license are in `site/images/`. There is no new runtime dependency or remote asset.
+
 Source Serif 4 is self-hosted in `site/fonts/`, with roman and italic variable
 WOFF2 files from `@fontsource-variable/source-serif-4@5.3.1`. The package tarball's
 SHA-512 integrity was verified before extraction. `PROVENANCE.json` records source
