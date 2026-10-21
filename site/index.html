@@ -11,6 +11,7 @@
   <script src="./site.js" defer></script>
   <script type="module" src="./wallet-ui.js"></script>
   <script type="module" src="./restart-ui.js"></script>
+  <script type="module" src="./donations-ui.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -105,6 +106,53 @@
       </div>
     </section>
 
+      <section class="donations-app section" id="donations-app" aria-labelledby="donations-title">
+        <p class="eyebrow">Contract donations · Tezos shadownet testnet</p>
+        <h2 id="donations-title">Donations app</h2>
+        <p class="action-terms">Live totals and a per-donor ledger are read straight from the <code>donations</code> smart contract by Taquito. A <strong>give</strong> is a contract call your wallet signs — the contract, not a single address, holds the funds. This is the shadownet testnet deployment; the same UI points at mainnet when the contract is deployed there.</p>
+        <div class="wallet-panel action-card" id="donations-state">
+          <div class="donations-totals">
+            <div class="donations-total-cell"><span class="donations-total" id="donations-total">Not loaded</span><span class="donations-label">Total raised</span></div>
+            <div class="donations-total-cell"><span class="donations-count" id="donations-count">—</span><span class="donations-label">Donations</span></div>
+          </div>
+          <p id="donations-status" role="status" aria-live="polite">Connect a shadownet wallet to see live donations and give. Connecting only pairs your wallet — it does not send anything.</p>
+          <ul class="donations-list" id="donations-list"></ul>
+        </div>
+        <div class="donation-wallet wallet-controls" aria-labelledby="donations-form-title">
+          <h3 id="donations-form-title">Give to the contract</h3>
+          <p id="donations-account" class="donations-account">Not connected</p>
+          <div class="donations-actions-row">
+            <button type="button" class="button" id="donations-connect">Connect wallet</button>
+            <button type="button" class="button secondary" id="donations-refresh" hidden>Refresh</button>
+            <button type="button" class="button secondary" id="donations-disconnect" hidden>Disconnect</button>
+          </div>
+          <div class="donations-presets" aria-label="Choose a donation amount">
+            <button type="button" class="button secondary donations-preset" data-donations-amount="1" aria-pressed="false">1 ꜩ</button>
+            <button type="button" class="button secondary donations-preset" data-donations-amount="10" aria-pressed="false">10 ꜩ</button>
+          </div>
+          <label for="donations-memo">Memo <span class="muted">(optional · on-chain, up to 100 chars)</span></label>
+          <input type="text" id="donations-memo" maxlength="100" autocomplete="off" spellcheck="false" aria-describedby="donations-memo-hint">
+          <p id="donations-memo-hint">A short note to the baker, stored publicly on-chain with your donation.</p>
+          <label for="donations-amount">Amount · ꜩ (shadownet testnet)</label>
+          <input type="text" id="donations-amount" inputmode="decimal" maxlength="22" value="1" autocomplete="off" spellcheck="false" aria-describedby="donations-fees">
+          <p id="donations-fees">Shadownet testnet ꜩ have no real-world value. Network fees are extra and estimated by your wallet.</p>
+          <label class="consent"><input type="checkbox" id="donations-consent" disabled><span>I understand this is a permanent gift to the donations contract, with no repayment or rewards. I will check the amount, recipient and extra network fees in my wallet.</span></label>
+          <button type="button" class="button" id="donations-review" disabled>Review donation</button>
+          <div id="donations-summary" class="delegation-summary" hidden>
+            <dl>
+              <dt>From your account</dt><dd id="donations-review-source"></dd>
+              <dt>Contract entrypoint</dt><dd id="donations-review-target">donate</dd>
+              <dt>Gift amount (fees extra)</dt><dd id="donations-review-amount"></dd>
+              <dt>Memo</dt><dd id="donations-review-memo"></dd>
+            </dl>
+            <div class="donation-actions">
+              <button type="button" class="button" id="donations-confirm" disabled>Open wallet to approve donation</button>
+              <button type="button" class="button secondary" id="donations-cancel">Cancel donation review</button>
+            </div>
+          </div>
+          <a id="donations-operation" target="_blank" rel="noopener noreferrer" hidden>View submitted operation</a>
+        </div>
+      </section>
 
       <section id="policy" class="split" aria-labelledby="policy-title">
         <h6 style="padding-top:10px;flex:1 1 240px">Read this first</h6>

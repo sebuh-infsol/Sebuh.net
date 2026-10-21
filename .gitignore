@@ -11,3 +11,6 @@ site/wallet-ui.js.LEGAL.txt
 site/restart-ui.js
 site/restart-ui.js.LEGAL.txt
 site/chunks/
+
+site/donations-ui.js
+site/donations-ui.js.LEGAL.txt
