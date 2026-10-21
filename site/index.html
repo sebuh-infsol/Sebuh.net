@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Support Sebuh Honarchian’s independent Tezos development through delegation. No delegation reward payouts. Direct staking follows the protocol’s separate rewards policy.">
+  <meta name="theme-color" content="#163e35">
+  <title>Sebuh.net — Delegate for development</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./site.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="header wrap">
+    <a class="wordmark" href="#" aria-label="Sebuh.net home">sebuh<span>.net</span></a>
+    <nav aria-label="Main navigation"><a href="#work">The work</a><a href="#policy">Reward policy</a><a class="nav-support" href="#support">Support development <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Independent development · Tezos</p>
+        <h1 id="hero-title">A little delegation.<br>A longer runway<br>for <em>building.</em></h1>
+        <p class="intro">I’m Sebuh Honarchian. I’m rebuilding my Tezos baker and developing the tools around it. If you want to support that work, you can delegate to Sebuh.net.</p>
+        <a class="button" href="#policy">See how support works <span aria-hidden="true">↓</span></a>
+        <p class="hero-note">Your XTZ stay in your wallet. Your support helps keep the work moving.</p>
+      </div>
+      <aside class="field-note" aria-label="Project note">
+        <div class="note-top"><span>FIELD NOTES</span><span>SEBUH.NET / TEZOS</span></div>
+        <p class="note-number" aria-hidden="true">ꜩ</p>
+        <h2>Built independently.<br>Supported by you.</h2>
+        <p>Not another promise of higher yield. A straightforward way to back a developer working on Tezos.</p>
+        <div class="restart"><span class="dot" aria-hidden="true"></span><div><strong>Restart in progress</strong><small>Rebuilding before resuming baking.<br>This preview is not a live status feed.</small></div></div>
+      </aside>
+    </section>
+    <section class="policy-band" id="policy" aria-labelledby="policy-title">
+      <div class="wrap policy-grid"><p class="eyebrow">Read this first</p><div><h2 id="policy-title">Support, not a payout service.</h2><p class="policy-lead"><strong>No delegation reward payouts.</strong> Sebuh.net retains its baking income to support my independent Tezos development. Ordinary delegation here is support for the work, not an investment or a promise of yield.</p><p>Direct staking is different: stakers receive protocol-distributed staking rewards, subject to the baker’s on-chain commission and protocol rules. Staked funds carry slashing risk and withdrawal delays. No promise of zero commission is made.</p></div></div>
+    </section>
+    <section class="work wrap section" id="work" aria-labelledby="work-title">
+      <div class="section-heading"><p class="eyebrow">What you’re supporting</p><h2 id="work-title">The infrastructure.<br>And the work beyond it.</h2></div>
+      <div class="work-list">
+        <article><span class="index">01</span><div><h3>Bringing the baker back</h3><p>Rebuilding the node, DAL and hardware-backed signing setup, with an emphasis on careful operations and documented recovery.</p><span class="work-label">In progress</span></div></article>
+        <article><span class="index">02</span><div><h3>Tools that make operations clearer</h3><p>Developing monitoring, a private operations dashboard and practical runbooks. Public information stays separate from signing and management access.</p><span class="work-label">In development</span></div></article>
+        <article><span class="index">03</span><div><h3>Working in the open</h3><p>Exploring Octez source contributions and Tezos protocol ideas. Published contributions and development notes will be linked here as they become available.</p><a href="https://gitlab.com/infsol/tezos" target="_blank" rel="noopener noreferrer">Explore the Octez fork <span aria-hidden="true">↗</span></a></div></article>
+      </div>
+    </section>
+    <section class="support wrap section" id="support" aria-labelledby="support-title">
+      <div><p class="eyebrow">Back the work</p><h2 id="support-title">Your wallet.<br>Your choice.<br><em>A shared direction.</em></h2><p>For ordinary delegation, choose this baker in a compatible Tezos wallet. You do not send your XTZ to this address. Network transaction fees may apply.</p><p class="support-disclosure"><strong>No delegation payouts.</strong> Only proceed if you want to support development under this policy. The baker is still restarting; this page does not claim current rewards or rights.</p></div>
+      <div class="address-panel"><p class="eyebrow">Sebuh.net · Mainnet delegate</p><code id="delegate-address">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</code><button class="button" type="button" id="copy-address">Copy delegate address <span aria-hidden="true">↗</span></button><p id="copy-status" aria-live="polite" role="status">Verify the full address in your wallet before confirming.</p><a class="explorer" href="https://tzkt.io/tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP/info" target="_blank" rel="noopener noreferrer">Check the delegate on TzKT <span aria-hidden="true">↗</span></a></div>
+    </section>
+    <section class="faq wrap section" aria-labelledby="faq-title"><div><p class="eyebrow">The small print, plainly</p><h2 id="faq-title">A few good questions.</h2></div><div class="questions">
+      <details><summary>Will I receive delegation rewards?</summary><p>No. Sebuh.net does not distribute ordinary delegation rewards. Retained baking income supports Sebuh’s Tezos development. If receiving delegation payouts is your goal, choose a baker with a payout policy that fits you.</p></details>
+      <details><summary>Do you take control of my wallet?</summary><p>No. Ordinary delegation does not transfer ownership or give Sebuh.net permission to spend your funds. Never share a recovery phrase or private key. This site does not ask you to connect a wallet or sign anything.</p></details>
+      <details><summary>What if I stake instead of just delegating?</summary><p>Staking is a separate action. Protocol-distributed staking rewards still go to stakers under the baker’s active staking parameters, including its commission. Staked funds are subject to slashing and withdrawal delays. Review the current on-chain parameters before staking.</p></details>
+      <details><summary>Can I stop supporting the baker?</summary><p>You control your wallet and can change your delegation. If you also staked funds, changing delegates and withdrawing stake involve additional protocol rules and delays.</p></details>
+      <details><summary>Is Sebuh.net baking right now?</summary><p>The baker is being rebuilt. Activation, funding, eligibility and signing cutover are separate steps. This preview deliberately makes no live uptime, yield or reward claims.</p></details>
+    </div></section>
+  </main>
+  <footer class="footer wrap"><a class="wordmark" href="#">sebuh<span>.net</span></a><p>Independent work. Clear terms. Tezos.</p><a href="https://gitlab.com/sebuh/sebuh.net" target="_blank" rel="noopener noreferrer">Site source <span aria-hidden="true">↗</span></a></footer>
+</body>
+</html>

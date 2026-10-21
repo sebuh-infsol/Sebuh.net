@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "sebuh-net",
+  "compatibility_date": "2026-10-20",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./site"
+  }
+}

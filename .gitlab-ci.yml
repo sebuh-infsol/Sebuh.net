@@ -14,3 +14,10 @@ secret_detection:
   stage: secret-detection
 include:
 - template: Security/Secret-Detection.gitlab-ci.yml
+
+site_tests:
+  stage: test
+  image: node:22-alpine
+  script:
+  - node --test test/*.test.mjs
+  - node --check site/site.js
