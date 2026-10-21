@@ -6,3 +6,6 @@ node_modules/
 .dev.vars
 .dev.vars.*
 *.log
+site/wallet-ui.js
+site/wallet-ui.js.LEGAL.txt
+site/chunks/

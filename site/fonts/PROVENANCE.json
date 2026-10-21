@@ -1,0 +1,21 @@
+{
+  "package": "@fontsource-variable/source-serif-4",
+  "version": "5.3.1",
+  "license": "OFL-1.1",
+  "tarball": "https://registry.npmjs.org/@fontsource-variable/source-serif-4/-/source-serif-4-5.3.1.tgz",
+  "integrity": "sha512-4Rtay22SC4lMvw11r/+9kxANB6P3M0X8s1NudBC2v0J1KU2y3DcMoNcT3lBoZ/CqLirzf+StlO6UlJilyrvaUg==",
+  "files": [
+    {
+      "file": "source-serif-4-latin-roman.woff2",
+      "source": "package/files/source-serif-4-latin-standard-normal.woff2",
+      "bytes": 122360,
+      "sha256": "f2ea9c12d2fe9bd3a9589b02ad2c0909da88f30938c91adc838c4f4098f9f9e0"
+    },
+    {
+      "file": "source-serif-4-latin-italic.woff2",
+      "source": "package/files/source-serif-4-latin-standard-italic.woff2",
+      "bytes": 130188,
+      "sha256": "96e6393209728ab93c334ae739af8a040cd2006c82e8614d6465a8084db88f89"
+    }
+  ]
+}

@@ -18,6 +18,9 @@ include:
 site_tests:
   stage: test
   image: node:22-alpine
+  before_script:
+  - npm ci --ignore-scripts --no-audit --no-fund
   script:
-  - node --test test/*.test.mjs
+  - npm run bundle
+  - npm test
   - node --check site/site.js

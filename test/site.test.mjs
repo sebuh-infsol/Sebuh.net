@@ -24,7 +24,77 @@ test('support page discloses no payouts before the delegate address', () => {
   assert.match(html, /Restart in progress/);
   assert.match(html, /not an investment or a promise of yield/);
   assert.match(html, /Direct staking is different/);
-  assert.doesNotMatch(html, /connect wallet|guaranteed return|earn \d+%|localhost:8732|127\.0\.0\.1:8732/i);
+  assert.doesNotMatch(html, /guaranteed return|earn \d+%|localhost:8732|127\.0\.0\.1:8732|inMemorySigner/i);
+});
+
+test('wallet UI keeps pairing separate from policy review and wallet approval', () => {
+  const html=readFileSync(new URL('index.html',root),'utf8');
+  for(const id of ['wallet-connect','wallet-disconnect','delegation-consent','delegation-review','delegation-confirm','wallet-status']) {
+    assert.match(html,new RegExp('id="'+id+'"'));
+  }
+  assert.match(html,/type="checkbox" id="delegation-consent"/);
+  assert.match(html,/Connecting does not request a transaction/);
+  assert.match(html,/src="\.\/wallet-ui\.js"/);
+  const headers=readFileSync(new URL('_headers',root),'utf8');
+  assert.match(headers,/https:\/\/rpc\.tzkt\.io/);
+  assert.doesNotMatch(headers,/unsafe-eval|connect-src[^;]*\*/);
+  assert.doesNotMatch(headers,/pulse\.walletconnect|beacon-metrics/);
+  const adapter=readFileSync(new URL('../src/octez-client.mjs',import.meta.url),'utf8');
+  assert.match(adapter,/disableWalletConnect:true/);
+  assert.match(adapter,/enableMetrics:false/);
+  assert.match(adapter,/NetworkType\.MAINNET/);
+  const build=readFileSync(new URL('../scripts/build-wallet.mjs',import.meta.url),'utf8');
+  assert.match(build,/inject:\['src\/buffer-shim\.mjs'\]/);
+  const config=JSON.parse(readFileSync(new URL('../wrangler.json',import.meta.url),'utf8'));
+  assert.equal(config.build.command,'npm run build');
+});
+
+test('donation suggestions distinguish an irreversible gift from delegation and staking',()=>{
+  const html=readFileSync(new URL('index.html',root),'utf8');
+  const donation=html.match(/<section\b[^>]*id="donate"[\s\S]*?<\/section>/)?.[0] || '';
+  assert.match(donation,/Help grow the baker/);
+  for(const amount of ['10','100','1000'])assert.match(donation,new RegExp('>'+amount+' XTZ<'));
+  assert.match(donation,/transfer ownership/);
+  assert.match(donation,/not delegation or direct staking/);
+  assert.match(donation,/no entitlement to repayment or rewards/);
+  assert.match(donation,/do not automatically stake funds, activate the baker or guarantee baking rights/);
+  assert.ok(donation.indexOf('transfer ownership')<donation.indexOf('id="copy-donation-address"'));
+  assert.match(donation,/<code id="donation-address">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP<\/code>/);
+  assert.match(donation,/Send.*wallet/);
+  assert.doesNotMatch(donation,/tezos:\/\/|requestOperation|type="submit"/);
+  assert.match(html,/With ordinary delegation, your XTZ stay in your wallet/);
+});
+
+test('header wallet controls and all support actions are immediately after the hero',()=>{
+  const html=readFileSync(new URL('index.html',root),'utf8');
+  const header=html.match(/<header\b[\s\S]*?<\/header>/)?.[0] || '';
+  for(const id of ['wallet-connect','wallet-disconnect','wallet-refresh']){
+    assert.match(header,new RegExp('id="'+id+'"'));
+    assert.equal([...html.matchAll(new RegExp('id="'+id+'"','g'))].length,1);
+  }
+  assert.match(html,/<\/aside>\s*<\/section>\s*<section[^>]*id="support-actions"/);
+  const actions=html.slice(html.indexOf('id="support-actions"'),html.indexOf('id="policy"'));
+  for(const id of ['delegate-with-wallet','stake','donate'])assert.match(actions,new RegExp('id="'+id+'"'));
+  assert.match(actions,/>Delegate<\/h2>/);
+  assert.match(actions,/>Stake<\/h2>/);
+  assert.match(actions,/>Donate<\/h2>/);
+  assert.match(actions,/id="staking-unavailable" disabled/);
+  assert.match(actions,/Staking is not enabled in this connector/);
+});
+
+test('broadsheet redesign retains functioning support UI without export placeholders',()=>{
+  const html=readFileSync(new URL('index.html',root),'utf8');
+  assert.match(html,/class="masthead"/);
+  assert.match(html,/class="cmyk-head/);
+  assert.match(html,/id="code"/);
+  assert.match(html,/id="governance"/);
+  assert.doesNotMatch(html,/donation address — to add|Contact link — to add|no wallet connection|does not ask you to connect a wallet/);
+  const css=readFileSync(new URL('style.css',root),'utf8');
+  assert.match(css,/@font-face/);
+  assert.match(css,/source-serif-4-latin-roman\.woff2/);
+  assert.match(css,/source-serif-4-latin-italic\.woff2/);
+  for(const name of ['source-serif-4-latin-roman.woff2','source-serif-4-latin-italic.woff2','OFL.txt'])assert.ok(existsSync(new URL('fonts/'+name,root)));
+  assert.doesNotMatch(css,/@import|https?:\/\//);
 });
 
 test('page includes accessible controls and only local assets', () => {

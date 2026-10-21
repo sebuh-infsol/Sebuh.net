@@ -5,6 +5,7 @@
   "workers_dev": true,
   "preview_urls": true,
   "previews": {},
+  "build": { "command": "npm run build" },
   "assets": {
     "directory": "./site"
   }

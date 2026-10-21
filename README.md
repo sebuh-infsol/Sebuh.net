@@ -21,12 +21,43 @@ RPC addresses or management controls belong in this repository or Worker.
 
 ## Development
 
-Node22.17 or newer is required for the pinned Wrangler CLI. The site itself has
-no JavaScript framework, remote fonts, runtime packages or third-party scripts.
+### Visual design and typography
+
+The current local redesign adapts the owner's Claude Design broadsheet export:
+large masthead, CMYK process-plate headlines, code table and governance section.
+Existing wallet controls, delegation guards and donation disclosures are retained;
+export placeholders and stale claims that no wallet connection exists are removed.
+Connect stays top-centre and Delegate / Stake / Donate remain directly after the
+hero. Staking is explicitly unavailable in the connector, not a working form.
+
+Source Serif 4 is self-hosted in `site/fonts/`, with roman and italic variable
+WOFF2 files from `@fontsource-variable/source-serif-4@5.3.1`. The package tarball's
+SHA-512 integrity was verified before extraction. `PROVENANCE.json` records source
+paths and per-file SHA-256 values; `OFL.txt` preserves the font license. No remote
+font stylesheet, font service, install hook or new runtime dependency is used.
+
+The donation section recommends voluntary gifts of 10, 100 or 1000 XTZ to the
+published baker address to help grow its own stake. Donations transfer ownership;
+they are not delegation, direct staking or a reward-bearing deposit. Donors send
+manually from their own wallet. The section adds no connector transfer API,
+automatic staking, repayment/reward entitlement or baking-rights guarantee.
+
+Node22.17 or newer is required for the pinned Wrangler CLI. The site uses static HTML/CSS and a small client-side wallet module, with no
+runtime server, remote fonts or remote JavaScript. The optional connector uses
+pinned Octez Connect5.0.3 (modern @tezos-x namespace) and operation-request-only
+permissions. It is lazy-loaded after Connect. WalletConnect and SDK metrics are
+disabled. This is not an extension-only picker: extension and Matrix-supported
+wallets can pair. No raw-signing, transfer or staking UI is provided.
+
+Version5.0.4 was inspected but introduced older WalletConnect dependencies with
+known low/moderate advisories. Version5.0.3 was separately inspected and tested;
+the resulting dependency tree had zero npm-audit findings at implementation
+time. Do not blindly override crypto/decoder dependencies or treat an audit
+result as a permanent security guarantee.
 
 ```sh
 npm ci --ignore-scripts
-npm test
+npm run build
 npm run check:deploy
 npm run dev
 ```
@@ -66,7 +97,21 @@ against the connected Worker’s current Cloudflare dashboard. Wrangler is pinne
 in package-lock.json; dependencies must be installed before the commands run.
 `wrangler.json` names the existing Worker and serves `./site`, with preview URLs
 enabled. It has NO Worker entrypoint: static requests do not need custom code.
-The `_headers` file sets a restrictive CSP and denies framing and hardware APIs.
+The `_headers` file denies framing, browser hardware APIs, worker creation and
+script evaluation. The connector needs inline styles for its shadow-DOM picker;
+only style policy is relaxed. `connect-src` permits only the verified public
+mainnet RPC and eight bundled Matrix relay origins. Remote wallet-list JSON
+updates are intentionally blocked: the SDK uses its bundled fallback catalogue
+and may issue an expected CSP warning. No telemetry, WalletConnect relay,
+external script or private node origin is permitted.
+
+`npm run build` uses esbuild to produce the small UI module and lazy SDK chunks.
+Generated assets are ignored by Git and built before deployment through
+Wrangler's top-level `build.command`; production and preview builds therefore
+have the same prerequisite. CI installs with scripts disabled, bundles, and
+runs the tests. esbuild's lexical Buffer shim supplies the browser API expected
+by SDK modules without an inline script or unsafe-eval. Legal comments are
+preserved alongside the generated chunks.
 
 Cloudflare generates concrete version/branch preview URLs. The displayed
 `*-sebuh-net.sebuh.workers.dev` is a pattern, not a literal URL. Do not guess a
@@ -85,8 +130,26 @@ DNS or make an unrequested paid-plan upgrade as part of a website build.
 - `npm run check:deploy`: real Wrangler static-assets dry run.
 - Browser checks: desktop and mobile rendering, anchor links, FAQ controls,
   clipboard success and selected-text fallback when clipboard access is denied.
-- Security and API/data logic are intentionally small: no wallet connection,
-  signing requests, statistics API, cookies, trackers or stored wallet data.
+- The optional connector signs nothing locally. Connect and Review never send
+  operations. Request wallet approval performs new mainnet/account/stake checks
+  and asks the visitor's wallet for exactly one fixed-target delegation. Funds
+  do not transfer to the baker. Existing staked or frozen unstaking funds,
+  existing delegation to this baker, wrong accounts/networks, missing/broader
+  permissions and stale/unavailable RPC data block submission. Read-only RPC
+  requests are paced with bounded429 retries; wallet requests are never retried.
+- Returned hashes are labeled submitted/unverified, not successful on-chain
+  operations. Ambiguous wallet outcomes block further requests until the visitor
+  checks their wallet/explorer and deliberately reconnects.
+- Connection data and pairing keys live in the visitor's browser, managed by
+  Octez Connect. Public RPC/Matrix services may see network metadata. The Worker
+  has no account database, signer, secrets, payout process or private RPC access.
+- Wallet-prompt cancellation was exercised by the agent with the real SDK;
+  transaction paths use non-signing test doubles. The owner also reported a
+  successful spare-wallet connection, account-state display and correct blocking
+  of an already-delegated account. That is owner-reported pairing evidence, not
+  a newly signed delegation test. No mainnet transaction was signed by the agent.
+  Remaining wallet acceptance checks and fresh production-release approval are
+  required before promotion.
 
 A local test or dry run is not proof of a remote deployment. Keep GitLab commit,
 Cloudflare build and actual served production content as separate checks.
