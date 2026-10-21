@@ -3,7 +3,6 @@ const $=id=>document.getElementById(id);
 const bar=$('restart-progress');
 const refresh=$('restart-refresh');
 const status=$('restart-data-status');
-let lastAttempt=0;
 let expiryTimer;
 function render({snapshot,busy,error}){
   clearTimeout(expiryTimer);
@@ -30,17 +29,13 @@ function render({snapshot,busy,error}){
     status.textContent=error+(snapshot?' Last verified figures remain above; progress is hidden until refreshed.':' Please try Refresh.');
   }else if(snapshot && !fresh){status.textContent='Public funding data is stale. Last verified figures remain above; progress is hidden until refreshed.';}
   else if(busy){status.textContent='Checking TzKT’s public mainnet RPC…';}
-  else{status.textContent='Verified read-only public mainnet data. Refreshes every minute while this page is visible.';}
+  else{status.textContent='Verified read-only public mainnet data. Checked on page load; reload or use Refresh balance to update. No automatic polling.';}
 }
 const controller=createFundingController({onChange:render});
-function update(){lastAttempt=Date.now();return controller.refresh();}
+const update=()=>controller.refresh();
 refresh.addEventListener('click',update);
-setInterval(()=>{if(!document.hidden)update();},60000);
 document.addEventListener('visibilitychange',()=>{
-  if(!document.hidden){
-    render(controller.model);
-    if(Date.now()-lastAttempt>=60000)update();
-  }
+  if(!document.hidden)render(controller.model);
 });
 render(controller.model);
 update();

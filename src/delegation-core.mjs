@@ -10,7 +10,7 @@ function amount(value) {
 export function buildDelegationRequest({account,state,acknowledged,reviewed}) {
   if (acknowledged !== true || reviewed !== true) throw new Error('Read and acknowledge the no-payout policy, then review this delegation.');
   if (!account || account.network?.type !== 'mainnet' || state?.network !== 'mainnet' || state.chainId !== CHAIN) throw new Error('Connect a Tezos mainnet wallet.');
-  if (!Array.isArray(account.scopes) || !account.scopes.includes('operation_request') || account.scopes.includes('sign')) throw new Error('An operation-only wallet connection is required. Reconnect without raw-signing permission.');
+  if (!Array.isArray(account.scopes) || account.scopes.length!==1 || account.scopes[0]!=='operation_request') throw new Error('An operation-only wallet connection is required. Reconnect without raw-signing permission.');
   if (!/^tz[1-5][1-9A-HJ-NP-Za-km-z]{33}$/.test(account.address) || account.address !== state.address || account.address === BAKER) throw new Error('Account changed or is not eligible for this visitor delegation flow. Reconnect and review.');
   if (!Number.isFinite(state.observedAt) || Date.now()-state.observedAt > 120000 || state.observedAt>Date.now()+5000) throw new Error('Account information is stale. Refresh and review again.');
   if (amount(state.staked)>0n || amount(state.unstakedFrozen)>0n) throw new Error('This account has staked or frozen unstaking funds. Manage delegation in your wallet so those funds are not affected unexpectedly.');

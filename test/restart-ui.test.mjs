@@ -60,6 +60,13 @@ function assertLastVerified(h){
   assert.equal(h.element('restart-current').textContent,'1 XTZ');
 }
 
+test('funding reads once per page load and never polls or refreshes on tab return',async()=>{
+  const h=ui();await h.accept(h.snapshot());
+  h.advance(600000);h.visibility(true);h.visibility(false);
+  assert.equal(h.requests.length,1,'time and tab visibility must not generate RPC reads');
+  h.click();assert.equal(h.requests.length,2,'manual Refresh remains deliberate');
+});
+
 test('actual UI independently expires an accepted 119-second-old snapshot within two seconds',async()=>{
   const h=ui();await h.accept(h.snapshot(119000));
   assert.equal(h.element('restart-progress').hidden,false);

@@ -33,8 +33,9 @@ The 3800 XTZ goal is the earlier restart-plan own-funds target, configured in
 baking-power requirement. Reaching it does not automatically stake, activate or
 qualify the baker. Check actual protocol eligibility separately.
 
-Data loads without wallet pairing, with paced GETs, bounded read-only rate-limit
-retries, a 60-second visible-page refresh and manual refresh. Unknown/error values
+Data loads without wallet pairing, with paced GETs and bounded read-only
+rate-limit retries, once on page load or an explicit
+manual refresh. There is no interval or tab-visibility polling. Unknown/error values
 are never presented as zero. Failed/stale updates hide the bar and explicitly
 label any retained last-verified figures. No private node endpoint, signer,
 API credential or SDK operation request is used. This intentional public-RPC
@@ -46,8 +47,19 @@ The current local redesign adapts the owner's Claude Design broadsheet export:
 large masthead, CMYK process-plate headlines, code table and governance section.
 Existing wallet controls, delegation guards and donation disclosures are retained;
 export placeholders and stale claims that no wallet connection exists are removed.
-Connect stays top-centre and Delegate / Stake / Donate remain directly after the
-hero. Staking is explicitly unavailable in the connector, not a working form.
+Connect sits at the top-right, replacing the old navigation row and strapline.
+After explicit connection, its header details show the visitor address as the
+first six and last six characters, with the full address available accessibly,
+and exact spendable XTZ balance (not stake or frozen funds). Unavailable, stale,
+uncertain or post-submission balances are not advertised as current available
+funds. There is no automatic interval or tab-return balance polling. Read the
+connected account on explicit Connect or Refresh account; label retained old
+amounts Last checked rather than hiding them or implying current availability.
+Funding reads once per page load or explicit Refresh balance. Fresh checks before
+an explicitly requested transaction remain mandatory. No wallet operation is
+polled or retried.
+Delegate / Stake / Donate remain directly after the hero. Staking is
+explicitly unavailable in the connector, not a working form.
 
 Source Serif 4 is self-hosted in `site/fonts/`, with roman and italic variable
 WOFF2 files from `@fontsource-variable/source-serif-4@5.3.1`. The package tarball's
@@ -55,18 +67,29 @@ SHA-512 integrity was verified before extraction. `PROVENANCE.json` records sour
 paths and per-file SHA-256 values; `OFL.txt` preserves the font license. No remote
 font stylesheet, font service, install hook or new runtime dependency is used.
 
-The donation section recommends voluntary gifts of 10, 100 or 1000 XTZ to the
-published baker address to help grow its own stake. Donations transfer ownership;
-they are not delegation, direct staking or a reward-bearing deposit. Donors send
-manually from their own wallet. The section adds no connector transfer API,
-automatic staking, repayment/reward entitlement or baking-rights guarantee.
+The donation buttons offer 10, 100 or 1000 XTZ, with an editable amount for other
+gifts. A suggestion prefills the amount and opens Connect only if disconnected;
+it never automatically reviews or sends. Visitors separately acknowledge the
+permanent gift, review the fixed mainnet recipient and amount, then explicitly
+open their wallet for final approval. Amounts use exact BigInt mutez conversion
+(up to six XTZ decimal places), not floating-point arithmetic. A new pinned
+mainnet account read and final synchronous freshness/account/review checks occur
+before requesting exactly one fixed-recipient transfer. Only spendable balance
+counts; staked/frozen funds are never withdrawn. Network fees are additional,
+estimated by the wallet, and not promised by this page. Delegation and donation
+share one pending/uncertain/submitted-operation lock. There are no automatic
+wallet-request retries. Recipient copying/manual Send remains available.
+Donations transfer ownership, with no repayment/reward entitlement or automatic
+staking, activation or baking-rights guarantee. No real donation is signed as a
+development test.
 
 Node22.17 or newer is required for the pinned Wrangler CLI. The site uses static HTML/CSS and a small client-side wallet module, with no
 runtime server, remote fonts or remote JavaScript. The optional connector uses
 pinned Octez Connect5.0.3 (modern @tezos-x namespace) and operation-request-only
 permissions. It is lazy-loaded after Connect. WalletConnect and SDK metrics are
 disabled. This is not an extension-only picker: extension and Matrix-supported
-wallets can pair. No raw-signing, transfer or staking UI is provided.
+wallets can pair. Only ordinary delegation and explicitly reviewed one-time
+fixed-recipient donation transfers are supported; no raw signing or staking.
 
 Version5.0.4 was inspected but introduced older WalletConnect dependencies with
 known low/moderate advisories. Version5.0.3 was separately inspected and tested;
@@ -151,10 +174,12 @@ DNS or make an unrequested paid-plan upgrade as part of a website build.
   clipboard success and selected-text fallback when clipboard access is denied.
 - The optional connector signs nothing locally. Connect and Review never send
   operations. Request wallet approval performs new mainnet/account/stake checks
-  and asks the visitor's wallet for exactly one fixed-target delegation. Funds
-  do not transfer to the baker. Existing staked or frozen unstaking funds,
-  existing delegation to this baker, wrong accounts/networks, missing/broader
-  permissions and stale/unavailable RPC data block submission. Read-only RPC
+  and asks the visitor's wallet for exactly one fixed-target delegation or an
+  explicitly reviewed donation transfer. Only donations transfer XTZ ownership
+  to the baker. For delegation, existing staked or frozen unstaking funds and
+  existing delegation to this baker block requests. For both operations, wrong
+  accounts/networks, missing/broader permissions and stale/unavailable RPC data
+  block submission. Read-only RPC
   requests are paced with bounded429 retries; wallet requests are never retried.
 - Returned hashes are labeled submitted/unverified, not successful on-chain
   operations. Ambiguous wallet outcomes block further requests until the visitor

@@ -16,11 +16,11 @@
   <a class="skip" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="masthead">
-      <nav class="topnav" aria-label="Main navigation">
-        <span class="muted">Independent development · Tezos</span>
-        <div><a href="#support-actions">Support</a><a href="#work">The work</a><a href="#code">Code</a><a href="#governance">Governance</a><a href="#donate">Donate</a><a href="#faq">Questions</a></div>
-      </nav>
-      <div class="header-wallet" aria-label="Wallet connection"><div class="wallet-buttons"><button type="button" class="button" id="wallet-connect">Connect wallet</button><button type="button" class="button secondary" id="wallet-disconnect" hidden>Disconnect</button><button type="button" class="button secondary" id="wallet-refresh" hidden>Refresh account</button></div></div>
+      <div class="topnav" aria-label="Wallet connection">
+        <div class="header-wallet"><div class="wallet-buttons"><button type="button" class="button" id="wallet-connect">Connect wallet</button><button type="button" class="button secondary" id="wallet-disconnect" hidden>Disconnect</button><button type="button" class="button secondary" id="wallet-refresh" hidden>Refresh account</button></div>
+          <div id="wallet-header-details" class="wallet-header-details" role="status" aria-live="polite" hidden><span id="wallet-header-address"></span><span id="wallet-header-balance"></span></div>
+        </div>
+      </div>
       <a class="wordmark" href="#" aria-label="Sebuh.net home">sebuh<span>.net</span></a>
       <p class="masthead-disclosure"><strong>No delegation reward payouts.</strong> Donations are separate ownership-transferring gifts.</p>
       <div class="rail"><div>
@@ -62,7 +62,7 @@
       <nav class="action-shortcuts" aria-label="Support actions"><a href="#delegate-with-wallet">Delegate</a><a href="#stake">Stake</a><a href="#donate">Donate</a></nav>
       <div class="action-grid">
       <section class="wallet-panel action-card" id="delegate-with-wallet" aria-labelledby="wallet-title">
-      <div><p class="eyebrow">Optional wallet connection · Mainnet</p><h2 id="wallet-title">Delegate</h2><p>Connecting does not request a transaction. This release supports ordinary delegation only—not staking, transfers or raw message signing.</p><p>No delegation payouts. Direct stakers keep their protocol-distributed rewards under the active commission; staking is managed separately in your wallet.</p><p class="wallet-privacy">Octez Connect stores connection data in your browser. Pairing may use public Matrix relays, and account checks use TzKT’s public RPC. Those services can see network metadata. WalletConnect and SDK metrics are disabled.</p><a href="#policy">Read the reward policy before proceeding</a></div>
+      <div><p class="eyebrow">Optional wallet connection · Mainnet</p><h2 id="wallet-title">Delegate</h2><p>Connecting does not request a transaction. You can review ordinary delegation here or a one-time gift in the Donate panel. Staking and raw message signing are not enabled.</p><p>No delegation payouts. Direct stakers keep their protocol-distributed rewards under the active commission; staking is managed separately in your wallet.</p><p class="wallet-privacy">Octez Connect stores connection data in your browser. Pairing may use public Matrix relays, and account checks use TzKT’s public RPC. Those services can see network metadata. WalletConnect and SDK metrics are disabled.</p><a href="#policy">Read the reward policy before proceeding</a></div>
       <div class="card">
               <span class="card-kicker">Sebuh.net · Mainnet delegate</span>
               <code id="delegate-address">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</code>
@@ -82,8 +82,26 @@
         <p class="eyebrow">Direct staking · Separate from delegation</p><h2 id="stake-title">Stake</h2><p><strong>Staking is not enabled in this connector.</strong> The baker is still restarting. This panel does not prepare or submit staking operations.</p><p>Direct stakers receive protocol-distributed rewards under the baker’s actual on-chain commission and parameters. Staked funds carry slashing risk and withdrawal delays.</p><button type="button" class="button secondary" id="staking-unavailable" disabled>Staking not enabled yet</button><p>Check the baker’s status and current on-chain parameters before managing staking in your own wallet.</p><a class="explorer" href="https://docs.tezos.com/using/staking" target="_blank" rel="noopener noreferrer">Read the Tezos staking guide <span aria-hidden="true">↗</span></a>
       </section>
       <section class="donation action-card" id="donate" aria-labelledby="donation-title">
-      <div><p class="eyebrow">A direct gift · Optional</p><h2 id="donation-title">Donate</h2><p>Help grow the baker’s own stake and baking power with a one-time donation. Suggested gifts:</p><ul class="donation-amounts" aria-label="Suggested donation amounts"><li><strong>10 XTZ</strong></li><li><strong>100 XTZ</strong></li><li><strong>1000 XTZ</strong></li></ul><p>Any amount is welcome. Donations are intended to help grow the baker’s own stake. They do not automatically stake funds, activate the baker or guarantee baking rights; operator action and protocol requirements still apply.</p><p class="support-disclosure"><strong>A donation is not delegation or direct staking.</strong> You transfer ownership of the donated XTZ to Sebuh.net, with no entitlement to repayment or rewards. Only give what you are comfortable giving permanently.</p></div>
-      <div class="address-panel donation-panel"><p class="eyebrow">Donation recipient · Tezos mainnet</p><code id="donation-address">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</code><button class="button" type="button" id="copy-donation-address">Copy donation address <span aria-hidden="true">↗</span></button><p id="donation-copy-status" aria-live="polite" role="status">Verify the full recipient address before sending.</p><p>Use <strong>Send</strong> in your own Tezos wallet, enter the recipient and your chosen amount, then review and approve there. Leave enough XTZ for network fees. This section does not connect your wallet or prepare a transfer.</p><a class="explorer" href="https://tzkt.io/tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP" target="_blank" rel="noopener noreferrer">Verify the recipient on TzKT <span aria-hidden="true">↗</span></a></div>
+      <div><p class="eyebrow">A direct gift · Optional</p><h2 id="donation-title">Donate</h2><p>Help grow the baker’s own stake and baking power with a one-time donation. Suggested gifts:</p><ul class="donation-amounts" aria-label="Choose a donation amount and connect if needed"><li><button type="button" class="button secondary" data-donation-amount="10" aria-pressed="true">10 XTZ</button></li><li><button type="button" class="button secondary" data-donation-amount="100" aria-pressed="false">100 XTZ</button></li><li><button type="button" class="button secondary" data-donation-amount="1000" aria-pressed="false">1000 XTZ</button></li></ul><p>Any amount is welcome. Donations are intended to help grow the baker’s own stake. They do not automatically stake funds, activate the baker or guarantee baking rights; operator action and protocol requirements still apply.</p><p class="support-disclosure"><strong>A donation is not delegation or direct staking.</strong> You transfer ownership of the donated XTZ to Sebuh.net, with no entitlement to repayment or rewards. Only give what you are comfortable giving permanently.</p></div>
+      <div class="donation-wallet wallet-controls" aria-labelledby="donation-form-title">
+        <h3 id="donation-form-title">Give with your connected wallet</h3>
+        <p>Choose 10, 100 or 1000 XTZ above, or enter another amount. If needed, choosing a suggestion opens Connect first. Connecting and reviewing never send funds.</p>
+        <label for="donation-amount">Donation amount · XTZ</label>
+        <input type="text" id="donation-amount" inputmode="decimal" maxlength="22" value="10" autocomplete="off" spellcheck="false" aria-describedby="donation-fees">
+        <p id="donation-fees">Spendable XTZ only; up to 6 decimal places. Network fees are extra and estimated by your wallet. Staked and frozen funds are not used or withdrawn.</p>
+        <label class="consent"><input type="checkbox" id="donation-consent" disabled><span>I understand this is a permanent gift to Sebuh.net, with no repayment or rewards. I will check the amount, recipient and extra network fees in my wallet.</span></label>
+        <button type="button" class="button" id="donation-review" disabled>Review donation</button>
+        <div id="donation-summary" class="delegation-summary" hidden>
+          <h3>Review your gift · Tezos mainnet</h3>
+          <dl><dt>From your account</dt><dd id="donation-review-source"></dd><dt>Donation recipient</dt><dd id="donation-review-target"></dd><dt>Gift amount (fees extra)</dt><dd id="donation-review-amount"></dd></dl>
+          <p>One transfer only. No delegation, staking or recurring permission. Your wallet will show the final fees and ask you to approve. The gift cannot be recalled by this site.</p>
+          <button type="button" class="button" id="donation-confirm" disabled>Open wallet to approve donation</button>
+          <button type="button" class="button secondary" id="donation-cancel">Cancel donation review</button>
+        </div>
+        <p id="donation-status" role="status" aria-live="polite">Connect to prepare a gift, or use the manual Send instructions below. Nothing is sent automatically.</p>
+        <a id="donation-operation" target="_blank" rel="noopener noreferrer" hidden>View submitted operation</a>
+      </div>
+      <div class="address-panel donation-panel"><p class="eyebrow">Donation recipient · Tezos mainnet</p><code id="donation-address">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</code><button class="button" type="button" id="copy-donation-address">Copy donation address <span aria-hidden="true">↗</span></button><p id="donation-copy-status" aria-live="polite" role="status">Verify the full recipient address before sending.</p><p>For a manual alternative, use <strong>Send</strong> in your own Tezos wallet, enter the recipient and your chosen amount, then review and approve there. Leave enough XTZ for network fees. The form above prepares only the gift you explicitly review and request.</p><a class="explorer" href="https://tzkt.io/tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP" target="_blank" rel="noopener noreferrer">Verify the recipient on TzKT <span aria-hidden="true">↗</span></a></div>
     </section>
       </div>
     </section>

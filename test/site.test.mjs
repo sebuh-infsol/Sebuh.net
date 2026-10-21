@@ -97,6 +97,19 @@ test('broadsheet redesign retains functioning support UI without export placehol
   assert.doesNotMatch(css,/@import|https?:\/\//);
 });
 
+test('hero field-note starts level with the headline instead of bottom-aligning the right panel',()=>{
+  const css=readFileSync(new URL('style.css',root),'utf8');
+  const rule=css.match(/\.field-note\{([^}]+)\}/)?.[1] || '';
+  assert.match(rule,/align-self:start(?:;|$)/);
+  assert.doesNotMatch(rule,/align-self:end/);
+});
+
+test('hero Tezos logo scales prominently on desktop without oversizing mobile',()=>{
+  const css=readFileSync(new URL('style.css',root),'utf8');
+  assert.match(css,/\.big-glyph\{font-size:clamp\(160px,20vw,320px\)\}/);
+  assert.match(css,/\.field-note \.big-glyph\{margin-bottom:20px\}/);
+});
+
 test('page includes accessible controls and only local assets', () => {
   assert.ok(existsSync(new URL('index.html', root)), 'support page has not been built');
   const html = readFileSync(new URL('index.html', root), 'utf8');
