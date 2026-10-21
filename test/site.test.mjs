@@ -10,6 +10,7 @@ test('Cloudflare deployment serves static assets without a Worker entrypoint or 
   assert.equal(config.name, 'sebuh-net');
   assert.equal(config.assets.directory, './site');
   assert.equal(config.preview_urls, true);
+  assert.deepEqual(config.previews, {}, 'wrangler preview requires its own explicit previews block; preview_urls is not enough');
   for (const forbidden of ['main', 'routes', 'route', 'kv_namespaces', 'vars', 'secrets_store_secrets']) {
     assert.equal(config[forbidden], undefined);
   }

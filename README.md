@@ -51,8 +51,15 @@ Suggested connected-GitLab settings:
 - Production branch: `main` (verify in the dashboard before merging)
 - Build command: `npm test`
 - Production deploy command: `npx wrangler deploy`
-- Non-production deploy command, if preview builds are enabled:
-  `npx wrangler versions upload`
+- Preview command for the configured Worker Previews build:
+  `npx wrangler preview`
+
+Worker Previews requires an explicit `"previews": {}` block in `wrangler.json`.
+`preview_urls: true` alone only enables version URLs and does not satisfy the
+new Preview command. This site has no preview-specific bindings or secrets,
+so the block is deliberately empty. Assets remain top-level.
+`npx wrangler versions upload` is a separate version-URL workflow, not the
+command used by this project's connected preview build.
 
 The exact build/deploy setting names and preview behavior should be checked
 against the connected Worker’s current Cloudflare dashboard. Wrangler is pinned
