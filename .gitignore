@@ -8,4 +8,6 @@ node_modules/
 *.log
 site/wallet-ui.js
 site/wallet-ui.js.LEGAL.txt
+site/restart-ui.js
+site/restart-ui.js.LEGAL.txt
 site/chunks/

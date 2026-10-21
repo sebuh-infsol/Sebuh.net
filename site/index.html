@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="./style.css">
   <script src="./site.js" defer></script>
   <script type="module" src="./wallet-ui.js"></script>
+  <script type="module" src="./restart-ui.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -27,6 +28,13 @@
         <span class="mono">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</span>
         <span class="status"><i aria-hidden="true"></i>Restart in progress</span>
       </div></div>
+      <div class="restart-funding" id="restart-funding" role="region" aria-labelledby="restart-heading">
+        <div class="funding-top"><div><p class="eyebrow">Baker restart fund · Public on-chain balances</p><h2 id="restart-heading"><span id="restart-current">Checking…</span> <span class="funding-target">of <span id="restart-goal">3,800 XTZ</span></span></h2></div><a class="btn btn-ghost" href="#donate">Help grow the restart fund ↗</a></div>
+        <progress class="funding-progress" id="restart-progress" max="10000" aria-labelledby="restart-heading" aria-describedby="restart-explainer restart-updated" hidden></progress>
+        <div class="funding-totals"><strong id="restart-percent">—</strong><span id="restart-remaining">Remaining amount pending verification</span><span id="restart-breakdown">Spendable balance + the baker’s own stake</span></div>
+        <p id="restart-explainer" class="funding-note"><strong>Funding target only.</strong> This is the earlier 3,800 XTZ own-funds restart target, not a protocol eligibility threshold. It excludes delegators’ funds and pending exchange withdrawals. Holding funds does not stake them, activate the baker or guarantee baking rights.</p>
+        <div class="funding-footer"><div><p id="restart-data-status" role="status" aria-live="polite">JavaScript is needed for live balances. No wallet connection is required.</p><p id="restart-updated">No successful update yet.</p><p class="funding-note">Figures load from TzKT’s public mainnet RPC; that service can see your network metadata. This balance is not a donation-raised total.</p></div><button class="button secondary" type="button" id="restart-refresh">Refresh balance</button></div>
+      </div>
     </header>
 
     <main id="main">
@@ -46,7 +54,7 @@
           <div class="cmyk-num big-glyph" aria-hidden="true"><span class="paper">ꜩ</span><span class="plate plate-c">ꜩ</span><span class="plate plate-m">ꜩ</span><span class="plate plate-y">ꜩ</span></div>
           <h2>Built independently.<br>Supported by you.</h2>
           <p>Not another promise of higher yield. A straightforward way to back a developer working on Tezos.</p>
-          <p class="restart"><strong>Restart in progress.</strong> Rebuilding before resuming baking. This preview is not a live status feed.</p>
+          <p class="restart"><strong>Restart in progress.</strong> Rebuilding before resuming baking. Balance updates above do not prove baking readiness.</p>
         </aside>
       </section>
     <section class="support-actions section" id="support-actions" aria-labelledby="actions-title">

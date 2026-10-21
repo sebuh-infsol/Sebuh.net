@@ -21,6 +21,25 @@ RPC addresses or management controls belong in this repository or Worker.
 
 ## Development
 
+### Public restart-funding progress
+
+The masthead's full-width progress bar reads the fixed baker address through
+`https://rpc.tzkt.io/mainnet`, independently of the wallet connector. It validates
+mainnet, a fresh pinned block and integer-mutez spendable/own-staked values. The
+numerator is spendable balance plus own stake only: external delegated/staked
+funds and pending exchange withdrawals are excluded. It is NOT donations raised.
+The 3800 XTZ goal is the earlier restart-plan own-funds target, configured in
+`src/restart-progress.mjs`; it is not the 600 XTZ own-stake minimum or the 6000 XTZ
+baking-power requirement. Reaching it does not automatically stake, activate or
+qualify the baker. Check actual protocol eligibility separately.
+
+Data loads without wallet pairing, with paced GETs, bounded read-only rate-limit
+retries, a 60-second visible-page refresh and manual refresh. Unknown/error values
+are never presented as zero. Failed/stale updates hide the bar and explicitly
+label any retained last-verified figures. No private node endpoint, signer,
+API credential or SDK operation request is used. This intentional public-RPC
+request occurs on page load; it is disclosed in the widget's privacy caption.
+
 ### Visual design and typography
 
 The current local redesign adapts the owner's Claude Design broadsheet export:
