@@ -1,0 +1,57 @@
+parameter (or (bytes %donate) (or (address %Update_donation_routing)
+    (or (unit %dispurse_donations) (option %set_baker key_hash))));
+storage (pair (address %admin) (address %donation_recipient)
+    (option %selected_baker key_hash) (nat %next_donation_id)
+    (big_map %donations nat (pair (address %sender) (mutez %amount)
+        (timestamp %timestamp) (nat %level) (bytes %memo)))
+    (nat %total_donated) (nat %total_disbursed));
+code { UNPAIR; IF_LEFT { DUP; SIZE; PUSH nat 2048; COMPARE; GE;
+        IF {} { PUSH string "MEMO_BYTES"; FAILWITH };
+        DUP; PUSH nat 0; PUSH bytes 0xbf; PUSH bytes 0x80;
+        PUSH nat 0; PUSH nat 0; PAIR 6;
+        DUP; GET 1; DUP 2; GET 10; SIZE; SWAP; COMPARE; LT;
+        LOOP {
+            DUP; GET 10; PUSH nat 1; DUP 3; GET 1; SLICE;
+            IF_NONE { PUSH string "MEMO_SLICE"; FAILWITH } {};
+            DUP 2; GET 3; PUSH nat 0; COMPARE; LT;
+            IF {
+                DUP; DUP 3; GET 5; SWAP; COMPARE; GE; IF {} { PUSH string "MEMO_UTF8"; FAILWITH };
+                DUP; DUP 3; GET 7; SWAP; COMPARE; LE; IF {} { PUSH string "MEMO_UTF8"; FAILWITH };
+                DROP; DUP; GET 3; PUSH nat 1; SWAP; SUB;
+                ISNAT; IF_NONE { PUSH string "MEMO_STATE"; FAILWITH } {}; UPDATE 3;
+                PUSH bytes 0x80; UPDATE 5; PUSH bytes 0xbf; UPDATE 7
+            } {
+                DIP { DUP; GET 9; PUSH nat 1; ADD; DUP; PUSH nat 512; COMPARE; GE;
+                      IF {} { PUSH string "MEMO_CODEPOINTS"; FAILWITH }; UPDATE 9 };
+                DUP; PUSH bytes 0x80; SWAP; COMPARE; LT; IF { DROP; PUSH nat 0; UPDATE 3; PUSH bytes 0x80; UPDATE 5; PUSH bytes 0xbf; UPDATE 7 } { DUP; PUSH bytes 0xc2; SWAP; COMPARE; LT; IF { PUSH string "MEMO_UTF8"; FAILWITH } { DUP; PUSH bytes 0xe0; SWAP; COMPARE; LT; IF { DROP; PUSH nat 1; UPDATE 3; PUSH bytes 0x80; UPDATE 5; PUSH bytes 0xbf; UPDATE 7 } { DUP; PUSH bytes 0xe1; SWAP; COMPARE; LT; IF { DROP; PUSH nat 2; UPDATE 3; PUSH bytes 0xa0; UPDATE 5; PUSH bytes 0xbf; UPDATE 7 } { DUP; PUSH bytes 0xed; SWAP; COMPARE; LT; IF { DROP; PUSH nat 2; UPDATE 3; PUSH bytes 0x80; UPDATE 5; PUSH bytes 0xbf; UPDATE 7 } { DUP; PUSH bytes 0xee; SWAP; COMPARE; LT; IF { DROP; PUSH nat 2; UPDATE 3; PUSH bytes 0x80; UPDATE 5; PUSH bytes 0x9f; UPDATE 7 } { DUP; PUSH bytes 0xf0; SWAP; COMPARE; LT; IF { DROP; PUSH nat 2; UPDATE 3; PUSH bytes 0x80; UPDATE 5; PUSH bytes 0xbf; UPDATE 7 } { DUP; PUSH bytes 0xf1; SWAP; COMPARE; LT; IF { DROP; PUSH nat 3; UPDATE 3; PUSH bytes 0x90; UPDATE 5; PUSH bytes 0xbf; UPDATE 7 } { DUP; PUSH bytes 0xf4; SWAP; COMPARE; LT; IF { DROP; PUSH nat 3; UPDATE 3; PUSH bytes 0x80; UPDATE 5; PUSH bytes 0xbf; UPDATE 7 } { DUP; PUSH bytes 0xf5; SWAP; COMPARE; LT; IF { DROP; PUSH nat 3; UPDATE 3; PUSH bytes 0x80; UPDATE 5; PUSH bytes 0x8f; UPDATE 7 } { PUSH string "MEMO_UTF8"; FAILWITH } } } } } } } } } }
+            };
+            DUP; GET 1; PUSH nat 1; ADD; UPDATE 1;
+            DUP; GET 1; DUP 2; GET 10; SIZE; SWAP; COMPARE; LT
+        };
+        GET 3; PUSH nat 0; COMPARE; EQ;
+        IF {} { PUSH string "MEMO_TRUNCATED"; FAILWITH };AMOUNT; PUSH mutez 0; COMPARE; LT; IF {} { PUSH string "ZERO_DONATION"; FAILWITH };
+    LEVEL; NOW; AMOUNT; SENDER; PAIR 5; SOME;
+    DIP { DUP; GET 9 }; DUP 3; GET 7; UPDATE; UPDATE 9;
+    DUP; GET 7; PUSH nat 1; ADD; UPDATE 7;
+    DUP; GET 11; AMOUNT; PUSH mutez 1; SWAP; EDIV;
+    IF_NONE { PUSH string "MUTEZ_TO_NAT"; FAILWITH } { CAR }; ADD; UPDATE 11;
+    NIL operation; PAIR } { DUP 2; GET 1; SENDER; COMPARE; EQ;
+    IF {} { PUSH string "NOT_ADMIN"; FAILWITH };
+    AMOUNT; PUSH mutez 0; COMPARE; EQ;
+    IF {} { PUSH string "ADMIN_AMOUNT"; FAILWITH }; IF_LEFT { DUP; SELF_ADDRESS; COMPARE; NEQ;
+    IF {} { PUSH string "SELF_RECIPIENT"; FAILWITH };
+    DUP; SELF %dispurse_donations; ADDRESS; COMPARE; NEQ;
+    IF {} { PUSH string "SELF_RECIPIENT"; FAILWITH };
+    DUP; CONTRACT unit; IF_NONE { PUSH string "BAD_RECIPIENT"; FAILWITH } { DROP };
+    UPDATE 3; NIL operation; PAIR } { IF_LEFT { DROP; BALANCE; PUSH mutez 0; COMPARE; LT;
+    IF {} { PUSH string "ZERO_BALANCE"; FAILWITH };
+    DUP; GET 3; DUP; SELF_ADDRESS; COMPARE; NEQ;
+    IF {} { PUSH string "SELF_RECIPIENT"; FAILWITH };
+    DUP; SELF %dispurse_donations; ADDRESS; COMPARE; NEQ;
+    IF {} { PUSH string "SELF_RECIPIENT"; FAILWITH };
+    CONTRACT unit; IF_NONE { PUSH string "BAD_RECIPIENT"; FAILWITH } {};
+    BALANCE; UNIT; TRANSFER_TOKENS;
+    DIP { DUP; GET 12; BALANCE; PUSH mutez 1; SWAP; EDIV;
+          IF_NONE { PUSH string "MUTEZ_TO_NAT"; FAILWITH } { CAR }; ADD; UPDATE 12 };
+    NIL operation; SWAP; CONS; PAIR } {
+    DUP; DIP { UPDATE 5 }; SET_DELEGATE; NIL operation; SWAP; CONS; PAIR } } } };

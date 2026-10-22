@@ -19,6 +19,13 @@ imported. The public site has no connection to the private baker control plane.
 The delegate address is public. No credentials, hardware references, keys, private
 RPC addresses or management controls belong in this repository or Worker.
 
+## Donations contract source
+
+The separate [donations contract documentation](contracts/donations/README.md)
+includes reproducible offline tests, pinned Shadownet evidence and explicit audit
+limitations. Source publication does not change the public frontend or deploy a
+Mainnet collector.
+
 ## Development
 
 ### Public restart-funding progress

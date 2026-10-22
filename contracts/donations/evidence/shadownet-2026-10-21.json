@@ -1,0 +1,675 @@
+{
+  "schema_version": 1,
+  "scope": "Sanitized historical report extract, not a fresh RPC verification or independent professional audit; October 21, 2026 snapshots only.",
+  "network": "Shadownet",
+  "chain_id": "NetXsqzbfFenSTS",
+  "contract": "KT1Sgiad8uYnDQqpbG2Cc6G8DuDRvDRD6zXU",
+  "provenance": [
+    {
+      "id": "prior_contract_verification",
+      "source_report": "contract-verification-report.json",
+      "source_report_sha256": "d693dca3899bd1a16a8039b2a249f6a22ac763868a82beccfe9e8887ac2d0f97"
+    },
+    {
+      "id": "account_simulations",
+      "source_report": "simulation-tests/report.json",
+      "source_report_sha256": "c0e70d51c24d4b4b975271dd433fd61f2da9a7f40a48b93714e2e4762180045f"
+    },
+    {
+      "id": "simulation_verification",
+      "source_report": "simulation-tests/final-verification.json",
+      "source_report_sha256": "071b4ba61d71aecebfb706f511eee796853b0d09ccc8a3b9d7109beedcc607bd"
+    },
+    {
+      "id": "routing_update",
+      "source_report": "routing-update/report.json",
+      "source_report_sha256": "234952a994d335f9c142f1cd96cc32e368460ebe800801cb81e08e5b7ace9423"
+    },
+    {
+      "id": "live_acceptance",
+      "source_report": "live-donation-tests/report.json",
+      "source_report_sha256": "dffd861549a00a397121b235039e01022f9d1dee48f103da3b81e155c522fbcd"
+    }
+  ],
+  "artifact": {
+    "file_sha256": "33942998afa182c28d500cf3ffa80119ee89861a5b81d14058454877bf97ac9c",
+    "canonical_micheline_sha256": "60949207b13602cc984a51732b61f7a28cc8ac17c92ccc6eb3745c31636b8b62",
+    "canonicalization": "json.dumps(sort_keys=True,separators=(comma,colon)) UTF-8",
+    "parameter_sha256": "d9540d27f6bdae9f3ca8e79a1df70305606775bb19834c274fedfc1b4b28ba9f",
+    "storage_schema_sha256": "e42f5e36792810906155fc47287a0b57c77e9ec21f23950174352a0e8de0d8c6",
+    "parameter_schema": {
+      "prim": "parameter",
+      "args": [
+        {
+          "prim": "or",
+          "args": [
+            {
+              "prim": "bytes",
+              "annots": [
+                "%donate"
+              ]
+            },
+            {
+              "prim": "or",
+              "args": [
+                {
+                  "prim": "address",
+                  "annots": [
+                    "%Update_donation_routing"
+                  ]
+                },
+                {
+                  "prim": "or",
+                  "args": [
+                    {
+                      "prim": "unit",
+                      "annots": [
+                        "%dispurse_donations"
+                      ]
+                    },
+                    {
+                      "prim": "option",
+                      "annots": [
+                        "%set_baker"
+                      ],
+                      "args": [
+                        {
+                          "prim": "key_hash"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "storage_schema": {
+      "prim": "storage",
+      "args": [
+        {
+          "prim": "pair",
+          "args": [
+            {
+              "prim": "address",
+              "annots": [
+                "%admin"
+              ]
+            },
+            {
+              "prim": "pair",
+              "args": [
+                {
+                  "prim": "address",
+                  "annots": [
+                    "%donation_recipient"
+                  ]
+                },
+                {
+                  "prim": "pair",
+                  "args": [
+                    {
+                      "prim": "option",
+                      "annots": [
+                        "%selected_baker"
+                      ],
+                      "args": [
+                        {
+                          "prim": "key_hash"
+                        }
+                      ]
+                    },
+                    {
+                      "prim": "pair",
+                      "args": [
+                        {
+                          "prim": "nat",
+                          "annots": [
+                            "%next_donation_id"
+                          ]
+                        },
+                        {
+                          "prim": "pair",
+                          "args": [
+                            {
+                              "prim": "big_map",
+                              "annots": [
+                                "%donations"
+                              ],
+                              "args": [
+                                {
+                                  "prim": "nat"
+                                },
+                                {
+                                  "prim": "pair",
+                                  "args": [
+                                    {
+                                      "prim": "address",
+                                      "annots": [
+                                        "%sender"
+                                      ]
+                                    },
+                                    {
+                                      "prim": "pair",
+                                      "args": [
+                                        {
+                                          "prim": "mutez",
+                                          "annots": [
+                                            "%amount"
+                                          ]
+                                        },
+                                        {
+                                          "prim": "pair",
+                                          "args": [
+                                            {
+                                              "prim": "timestamp",
+                                              "annots": [
+                                                "%timestamp"
+                                              ]
+                                            },
+                                            {
+                                              "prim": "pair",
+                                              "args": [
+                                                {
+                                                  "prim": "nat",
+                                                  "annots": [
+                                                    "%level"
+                                                  ]
+                                                },
+                                                {
+                                                  "prim": "bytes",
+                                                  "annots": [
+                                                    "%memo"
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "prim": "pair",
+                              "args": [
+                                {
+                                  "prim": "nat",
+                                  "annots": [
+                                    "%total_donated"
+                                  ]
+                                },
+                                {
+                                  "prim": "nat",
+                                  "annots": [
+                                    "%total_disbursed"
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "origination": {
+    "hash": "ooueiaBsRYcEGkPKxSSxnwaULNDaqUKPQtqKmwTy5B4f5AYZnkV",
+    "block": "BLEzFp6sueXWDrUdNU5zxcsCweCJsbrrhMwB9NvTh4PfS2rreiJ",
+    "level": 5576203,
+    "timestamp": "2026-10-21T09:57:33Z",
+    "source": "tz1cb63zzWFmEBWyPmGkvjeKWdfAqUaWKNFm",
+    "counter": 33749760,
+    "exact_hash_content_status_and_address_verified_on_both_rpcs": true,
+    "indexed_status": "applied"
+  },
+  "historical_verification": {
+    "checked_at": "2026-10-21T22:16:24.227154+00:00",
+    "block": "BLz9iWMaKTmAyEsytB4tx32t8oDnnprPUPY9g8PKwx8Qi7GsBzs",
+    "level": 5583528,
+    "protocol": "PsUshuai9QapM5TGj1JpuVGkdxz5GykdnEvS6Rh8SUVrARvZLCY",
+    "offline_passed": 72,
+    "unsigned_native_passed": 40,
+    "unsigned_deployed_storage_passed": 8,
+    "maximum_memo": {
+      "codepoints": 512,
+      "bytes": 2048,
+      "minimum_run_code_gas": 5268,
+      "rejected_run_code_gas": 5267,
+      "hard_operation_gas_limit": 1040000,
+      "search_calls": 20
+    }
+  },
+  "account_simulations": {
+    "checked_at": "2026-10-21T22:48:03.391275+00:00",
+    "block": "BM8muMjUtYMotSJFKtowiQzypHxWmXzLbrMVtRyQDuZt1D8NSJ9",
+    "level": 5583884,
+    "code_sha256": "60949207b13602cc984a51732b61f7a28cc8ac17c92ccc6eb3745c31636b8b62",
+    "storage_sha256": "3d909f460ac320883d5ebedb178d55081ab51861e598f3480a709ac294ad443d",
+    "totals": {
+      "required": 25,
+      "tested": 25,
+      "passed": 25,
+      "failed": 0,
+      "blocked": 0
+    },
+    "raw_http_counts": {
+      "200": 5,
+      "500": 20
+    },
+    "offline_passed": 72,
+    "matrix_verifier_tests_passed": 11,
+    "preflight_attempt_run_code_calls": 0,
+    "state_checks": {
+      "same_pinned_state_readback": true,
+      "current_head_storage_and_all_balances_unchanged": true,
+      "independent_current_head_storage_and_all_balances_unchanged": true
+    },
+    "cases": [
+      {
+        "id": "test1/positive_donate",
+        "entrypoint": "donate",
+        "amount_mutez": 1,
+        "expected_error": null,
+        "outcome": "pass",
+        "http_status": 200,
+        "explicit_result_status": "succeeded_run_code_http_200"
+      },
+      {
+        "id": "test1/zero_donation",
+        "entrypoint": "donate",
+        "amount_mutez": 0,
+        "expected_error": "ZERO_DONATION",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test1/unauthorized_Update_donation_routing",
+        "entrypoint": "Update_donation_routing",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test1/unauthorized_dispurse_donations",
+        "entrypoint": "dispurse_donations",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test1/unauthorized_set_baker",
+        "entrypoint": "set_baker",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test2/positive_donate",
+        "entrypoint": "donate",
+        "amount_mutez": 2,
+        "expected_error": null,
+        "outcome": "pass",
+        "http_status": 200,
+        "explicit_result_status": "succeeded_run_code_http_200"
+      },
+      {
+        "id": "test2/zero_donation",
+        "entrypoint": "donate",
+        "amount_mutez": 0,
+        "expected_error": "ZERO_DONATION",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test2/unauthorized_Update_donation_routing",
+        "entrypoint": "Update_donation_routing",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test2/unauthorized_dispurse_donations",
+        "entrypoint": "dispurse_donations",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test2/unauthorized_set_baker",
+        "entrypoint": "set_baker",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test3/positive_donate",
+        "entrypoint": "donate",
+        "amount_mutez": 3,
+        "expected_error": null,
+        "outcome": "pass",
+        "http_status": 200,
+        "explicit_result_status": "succeeded_run_code_http_200"
+      },
+      {
+        "id": "test3/zero_donation",
+        "entrypoint": "donate",
+        "amount_mutez": 0,
+        "expected_error": "ZERO_DONATION",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test3/unauthorized_Update_donation_routing",
+        "entrypoint": "Update_donation_routing",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test3/unauthorized_dispurse_donations",
+        "entrypoint": "dispurse_donations",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test3/unauthorized_set_baker",
+        "entrypoint": "set_baker",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test4/positive_donate",
+        "entrypoint": "donate",
+        "amount_mutez": 4,
+        "expected_error": null,
+        "outcome": "pass",
+        "http_status": 200,
+        "explicit_result_status": "succeeded_run_code_http_200"
+      },
+      {
+        "id": "test4/zero_donation",
+        "entrypoint": "donate",
+        "amount_mutez": 0,
+        "expected_error": "ZERO_DONATION",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test4/unauthorized_Update_donation_routing",
+        "entrypoint": "Update_donation_routing",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test4/unauthorized_dispurse_donations",
+        "entrypoint": "dispurse_donations",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test4/unauthorized_set_baker",
+        "entrypoint": "set_baker",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test5/positive_donate",
+        "entrypoint": "donate",
+        "amount_mutez": 5,
+        "expected_error": null,
+        "outcome": "pass",
+        "http_status": 200,
+        "explicit_result_status": "succeeded_run_code_http_200"
+      },
+      {
+        "id": "test5/zero_donation",
+        "entrypoint": "donate",
+        "amount_mutez": 0,
+        "expected_error": "ZERO_DONATION",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test5/unauthorized_Update_donation_routing",
+        "entrypoint": "Update_donation_routing",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test5/unauthorized_dispurse_donations",
+        "entrypoint": "dispurse_donations",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      },
+      {
+        "id": "test5/unauthorized_set_baker",
+        "entrypoint": "set_baker",
+        "amount_mutez": 0,
+        "expected_error": "NOT_ADMIN",
+        "outcome": "pass",
+        "http_status": 500,
+        "explicit_result_status": "rejected_script_rejected_exact_reason"
+      }
+    ]
+  },
+  "routing_update": {
+    "status": "verified_applied_two_successor_blocks",
+    "operation_hash": "opK5LcLcHR6PoYMEkhhKMfrtqELEd4Jz13gM5gSY1fvDAcZYcgf",
+    "block": "BLoYS3oxXnmWKRsdVfwzUSMtduBjnL8VHi1SmjBEqwfTaX5P4dd",
+    "level": 5584009,
+    "confirmation_readback_block": "BLCuaeDcvakzdTPWQPyPc9RkEQ6ntKrtomjyHCLFyqM7RQo7nHc",
+    "confirmation_readback_level": 5584011,
+    "outer_status": "applied",
+    "exact_content": {
+      "kind": "transaction",
+      "source": "tz1cb63zzWFmEBWyPmGkvjeKWdfAqUaWKNFm",
+      "fee": "420",
+      "counter": "33749792",
+      "gas_limit": "892",
+      "storage_limit": "0",
+      "amount": "0",
+      "destination": "KT1Sgiad8uYnDQqpbG2Cc6G8DuDRvDRD6zXU",
+      "parameters": {
+        "entrypoint": "Update_donation_routing",
+        "value": {
+          "string": "tz1gi7PyMEPKhH3p6hqHiTyzabudNE7aZWYV"
+        }
+      }
+    },
+    "verified_at": "2026-10-21T23:00:51.397208+00:00"
+  },
+  "live_acceptance": {
+    "status": "PASS_actual_applied",
+    "baseline_block": "BMBw9xrVZtoymGGqehvYjNu43rLc896jWaPGRryTEaWY4JNnu77",
+    "final_block": "BLPrKjzyvUFbhmYKKu5nU3NrQseoq9EExXBDMzoQxJ6ooJYV1ox",
+    "final_level": 5584107,
+    "totals": {
+      "signed_donation_mutez": 5000000,
+      "donation_calls": 5,
+      "reveals": 5,
+      "payout_calls": 1,
+      "payout_amount_mutez": 5000000,
+      "fees_mutez": 3600,
+      "storage_burn_mutez": 172500
+    },
+    "assertions": {
+      "all_identities": true,
+      "both_chain_ids": true,
+      "code_and_beneficiary": true,
+      "all_simulations": true,
+      "exact_signed_contents": true,
+      "all_explicit_applied": true,
+      "all_two_successor_confirmations": true,
+      "independent_receipts": true,
+      "independent_state_balances_and_ledger": true,
+      "exact_fee_burn_accounting": true,
+      "donation_ledger_ids": [
+        19,
+        20,
+        21,
+        22,
+        23
+      ],
+      "payout_ledger_unchanged": true,
+      "contract_final_balance_zero": true
+    },
+    "final_storage": {
+      "admin": "tz1cb63zzWFmEBWyPmGkvjeKWdfAqUaWKNFm",
+      "donation_recipient": "tz1gi7PyMEPKhH3p6hqHiTyzabudNE7aZWYV",
+      "selected_baker": null,
+      "next_donation_id": 24,
+      "donations": 43254,
+      "total_donated": 56000000,
+      "total_disbursed": 56000000
+    },
+    "contract_final_balance_mutez": 0,
+    "operations": [
+      {
+        "label": "test1",
+        "hash": "opQ6opsriwgfn1NsaX9dnD3PdDC8yFPZpCfvTYv8gif7Np1nW6w",
+        "reveal": true,
+        "included_level": 5584064,
+        "successors": 13,
+        "ledger_record": {
+          "id": 19,
+          "sender": "tz1TKdH8JtKCd6oR9shsjsQH5S1ehjtkGRot",
+          "amount_mutez": 1000000,
+          "memo": "test1 live acceptance"
+        }
+      },
+      {
+        "label": "test2",
+        "hash": "opSg8b5BsjP8GxqADqzzFaGXX1e7TrG5fqQLuzQJeRbyifAGbt4",
+        "reveal": true,
+        "included_level": 5584082,
+        "successors": 2,
+        "ledger_record": {
+          "id": 20,
+          "sender": "tz1iUaJEZzGEh1vLG4taB2qkjW2RwkRjJ5Es",
+          "amount_mutez": 1000000,
+          "memo": "test2 live acceptance"
+        }
+      },
+      {
+        "label": "test3",
+        "hash": "ooefVkj8b1vBgJ2PbdSqnNqoNksidcrCTuo4Xdbue6DNgSR6o3r",
+        "reveal": true,
+        "included_level": 5584087,
+        "successors": 2,
+        "ledger_record": {
+          "id": 21,
+          "sender": "tz1RAgMykbGemHQtSCYVaRLc2g8nLg6r4zAZ",
+          "amount_mutez": 1000000,
+          "memo": "test3 live acceptance"
+        }
+      },
+      {
+        "label": "test4",
+        "hash": "oo1eX3Nf3QS5y9tuotz3i1v4zAn1VtEEVQRLvPvZUR6rgR72Wrv",
+        "reveal": true,
+        "included_level": 5584093,
+        "successors": 2,
+        "ledger_record": {
+          "id": 22,
+          "sender": "tz1UesJ1wzYxngwq4eQWLdvTT38kDS6fa2Te",
+          "amount_mutez": 1000000,
+          "memo": "test4 live acceptance"
+        }
+      },
+      {
+        "label": "test5",
+        "hash": "onjrDXL8mzjx6cTsKQxdUwKjBLZzXYutMZiA3FR5Gf1Mjd8675C",
+        "reveal": true,
+        "included_level": 5584098,
+        "successors": 2,
+        "ledger_record": {
+          "id": 23,
+          "sender": "tz1gi7PyMEPKhH3p6hqHiTyzabudNE7aZWYV",
+          "amount_mutez": 1000000,
+          "memo": "test5 live acceptance"
+        }
+      },
+      {
+        "label": "payout",
+        "hash": "opPyGBJNpZsFHvqDCw6e3Dkp6iynpVhWJGXLShbcSYGtHFBnAPY",
+        "reveal": false,
+        "included_level": 5584105,
+        "successors": 2,
+        "ledger_record": null
+      }
+    ]
+  },
+  "prior_harness": {
+    "trusted_as_full_pass": false,
+    "declared_totals": {
+      "applied": 18,
+      "rejected_as_expected": 12,
+      "failed_or_error": 2,
+      "failed_names": [
+        "T23_set_baker_spk",
+        "T23b_set_baker_state"
+      ],
+      "anomalies": 4
+    },
+    "defects": [
+      "T23 and T25 construct key_hash Micheline with key rather than string; local encoding exceptions cannot establish NOT_ADMIN rejection.",
+      "poll_op defaults missing receipt status to applied and has hash-presence success fallback.",
+      "done treats FAIL and ERROR as completed, making blind reruns unsafe.",
+      "Original verifier hardcodes Mainnet RPC; scratch copy changed only ROOT/RPC/chain to run unsigned Shadownet tests.",
+      "Prior report artifact_check recipient is stale relative to final storage."
+    ]
+  },
+  "counting_rule": "Runs overlap; repeated 72-test executions and different simulation matrices must not be summed into an audit score."
+}

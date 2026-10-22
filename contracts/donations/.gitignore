@@ -1,0 +1,26 @@
+# Local execution artifacts
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+# Defense in depth only; never copy wallet/faucet/signer exports here.
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*secret*
+*mnemonic*
+*faucet*
+tz1*.json
+tz2*.json
+tz3*.json
+tz4*.json
+wallet/
+wallets/
+*wallet*/
+secret_keys
+public_keys
+public_key_hashs
+*.log
