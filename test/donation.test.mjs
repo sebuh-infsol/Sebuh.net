@@ -16,7 +16,7 @@ test('request is fixed liquid-only mainnet transfer and fails closed on consent,
   const now=Date.now();t.mock.method(Date,'now',()=>now);
   const {buildDonationRequest:build}=await core();
   assert.equal(typeof build,'function');
-  const base=()=>({account:{address,network:{type:'mainnet'},scopes:['operation_request']},state:{address,network:'mainnet',chainId:CHAIN,balance:'10000001',staked:'99999999999999999999',unstakedFrozen:'8',delegate:BAKER,observedAt:Date.now()},amountXTZ:'10',acknowledged:true,reviewed:true});
+  const base=()=>({account:{address,network:{type:'mainnet',chainId:'tezos:NetXdQprcVkpaWU'},scopes:['operation_request']},state:{address,network:'mainnet',chainId:CHAIN,balance:'10000001',staked:'99999999999999999999',unstakedFrozen:'8',delegate:BAKER,observedAt:Date.now()},amountXTZ:'10',acknowledged:true,reviewed:true});
   assert.deepEqual(build(base()),{operationDetails:[{kind:'transaction',source:address,destination:BAKER,amount:'10000000'}]});
   const changes=[x=>x.acknowledged=false,x=>x.reviewed=false,x=>x.account=null,x=>x.account.network.type='ghostnet',x=>x.state.chainId='bad',x=>x.state.network='ghostnet',x=>x.account.scopes=['operation_request','sign'],x=>x.account.scopes=[],x=>x.account.address=BAKER,x=>x.account.address='KT1bad',x=>x.state.address=BAKER,x=>x.state.observedAt=NaN,x=>x.state.observedAt=Date.now()-120001,x=>x.state.observedAt=Date.now()+5001,x=>x.state.balance='10000000',x=>x.state.balance='9999999'];
   for(const field of ['balance','staked','unstakedFrozen'])for(const value of [null,undefined,1,-1,'-1','1.0','1e6','1_000','', '1'.repeat(21)])changes.push(x=>x.state[field]=value);

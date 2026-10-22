@@ -151,3 +151,11 @@ section{padding-bottom:clamp(72px,9vw,128px)}
 #donations-status{font-size:13px;color:var(--n800);margin:6px 0 14px;overflow-wrap:anywhere;min-height:20px}
 .muted{color:var(--muted);font-size:12px}
 @media(max-width:1050px){#donations-app .section{grid-template-columns:1fr;gap:28px}}
+.donations-network-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin:10px 0 16px}
+.donations-network{display:inline-flex;gap:0;border:1px solid var(--ink);border-radius:2px;overflow:hidden}
+.donations-network .button{border:0;border-radius:0;min-height:40px;padding:8px 18px}
+.donations-network .button+.button{border-left:1px solid var(--ink)}
+.donations-network [aria-pressed="true"]{background:var(--a700);color:var(--bg)}
+.donations-network-badge{margin:0;padding:8px 14px;border:2px solid var(--ink);border-radius:2px;font:700 12px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.08em}
+.donations-network-badge[data-network="mainnet"]{background:var(--ink);color:var(--bg)}
+.network-select{display:inline-flex;align-items:center;gap:6px;font-size:12px;margin-right:8px}.network-select select{min-height:44px;font:inherit;font-size:14px;padding:0 8px;border:1px solid currentColor;background:transparent;color:inherit}.network-select select:focus-visible{outline:2px solid var(--a700);outline-offset:2px}@media(max-width:650px){.masthead .header-wallet{flex-wrap:wrap;gap:8px}.network-select{margin-right:0}}

@@ -7,6 +7,7 @@ export function createController({client,loadState=readAccountState,onChange=()=
   let donationBinding=null;
   const clearReviews=()=>{model.review=null;model.donationReview=null;donationBinding=null;};
   function account(a) {
+    if (a?.network?.chainId !== 'tezos:NetXdQprcVkpaWU') throw new Error('Wallet chain mismatch. Reconnect explicitly to Mainnet.');
     if(!a || a.network?.type!=='mainnet' || !Array.isArray(a.scopes) || a.scopes.length!==1 || a.scopes[0]!=='operation_request') throw new Error('Connect a mainnet wallet with operation permission only, not raw signing permission.');
     return {address:a.address,network:{type:a.network.type},scopes:[...a.scopes]};
   }
@@ -28,7 +29,7 @@ export function createController({client,loadState=readAccountState,onChange=()=
     get model(){return model;},
     connect:()=>run(async()=>{
       clearReviews();
-      await client.requestPermissions({scopes:['operation_request']});
+      await client.requestPermissions({scopes:['operation_request'],networks:[{chainId:'tezos:NetXdQprcVkpaWU'}]});
       model.account=account(await client.getActiveAccount());
       model.state=await loadState(model.account.address);
       same(model.account,account(await client.getActiveAccount()));

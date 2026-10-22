@@ -27,12 +27,12 @@ function make({ network = 'shadownet', scopes = ['operation_request'], client: i
   let loadStateCalls = 0;
   const controller = createDonationsController({
     client,
-    config: DONATIONS_CONFIG,
+    config: {...DONATIONS_CONFIG, submissionPolicy: 'enabled', contractAddress: 'KT1-offline-fixture'},
     loadState: async () => { loadStateCalls += 1; return state; },
     // Deterministic, network-free op builder standing in for the Taquito encoder.
     buildOp: async ({ memo, amountMutez }) => {
       buildOpCalls.push({ memo, amountMutez });
-      return { destination: DONATIONS_CONFIG.contractAddress, amount: amountMutez, parameters: { entrypoint: DONATIONS_CONFIG.entrypoint, value: { bytes: '6869' } } };
+      return { destination: 'KT1-offline-fixture', amount: amountMutez, parameters: { entrypoint: DONATIONS_CONFIG.entrypoint, value: { bytes: '6869' } } };
     },
     onChange: () => {},
   });
@@ -73,7 +73,7 @@ test('review freezes source, destination, amount and memo into the review', asyn
   controller.review('thanks', '10', true);
   const r = controller.model.review;
   assert.equal(r.source, 'tz1-caller');
-  assert.equal(r.destination, DONATIONS_CONFIG.contractAddress);
+  assert.equal(r.destination, 'KT1-offline-fixture');
   assert.equal(r.amountXTZ, '10');
   assert.equal(r.amountMutez, '10000000');
   assert.equal(r.memo, 'thanks');
@@ -121,7 +121,7 @@ test('submit builds the op from the frozen reviewed values and records the op ha
   const opCall = client.calls.find((c) => c[0] === 'requestOperation');
   assert.equal(opCall[1].kind, 'transaction');
   assert.equal(opCall[1].source, 'tz1-caller');
-  assert.equal(opCall[1].destination, DONATIONS_CONFIG.contractAddress);
+  assert.equal(opCall[1].destination, 'KT1-offline-fixture');
   assert.equal(opCall[1].amount, '10000000');
   assert.equal(opCall[1].parameters.entrypoint, DONATIONS_CONFIG.entrypoint);
   assert.equal(opCall[2], DONATIONS_CONFIG.caip2);

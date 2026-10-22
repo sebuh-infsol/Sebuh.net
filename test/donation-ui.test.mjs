@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
+import {createNetworkState} from '../src/network-state.mjs';
+let lastNetworkState;
 
 // Execute the actual UI. The SDK/controller boundary is an explicit non-signing
 // fixture; there is no wallet, transport, permission store or network here.
@@ -27,7 +29,7 @@ function ui(){
   };
   const source=readFileSync(new URL('../src/wallet-ui.mjs',import.meta.url),'utf8').replace(/^import .*;\n/gm,'').replace("import('./octez-client.mjs')",'loadClient()');
   runInNewContext(source,{document:{getElementById:element,querySelectorAll:()=>presets},
-    BAKER:'tz1-fixed-baker',buildDelegationRequest(){},createController(options){changed=options.onChange;return controller;},
+    BAKER:'tz1-fixed-baker',buildDelegationRequest(){},networkState:lastNetworkState=createNetworkState(),createController(options){changed=options.onChange;return controller;},
     async loadClient(){loads++;return{makeClient:()=>({})};}
   },{filename:'wallet-ui.mjs'});
   const flush=async()=>{for(let i=0;i<12;i++)await Promise.resolve();};

@@ -24,7 +24,7 @@ function makeStubToolkit({ isMultiple = true, entrypoints = DONATE_ENTRYPOINTS, 
     async storage() { return storage; },
     methodsObject: methodsObject || { donate: (hex) => ({ toTransferParams: (opts) => interaction(hex, opts) }) },
   };
-  return { contract: { at: async () => contract }, wallet: { pkh: 'tz1-stub' } };
+  return { rpc: { getChainId: async () => CONFIG.chainId }, contract: { at: async () => contract }, wallet: { pkh: 'tz1-stub' } };
 }
 
 const DONATE_ENTRYPOINTS = { donate: { arguments: [{ name: 'memo', type: { prim: 'bytes' } }] } };

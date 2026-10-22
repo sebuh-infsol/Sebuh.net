@@ -55,9 +55,19 @@ export function parseMutez(text) {
 
 const toNumber = (value) => (value != null && typeof value.toNumber === 'function' ? value.toNumber() : Number(value ?? 0));
 
+// Reject accidental wrong-chain RPCs before reading or encoding a contract.
+async function verifyRpcChain(toolkit, config) {
+  if (typeof toolkit.rpc?.getChainId !== 'function') throw new Error('RPC chain ID method is unavailable.');
+  const chainId = await toolkit.rpc.getChainId();
+  if (typeof chainId !== 'string' || chainId.length === 0 || chainId !== config.chainId) throw new Error('RPC chain ID does not match the configured donation chain.');
+  return chainId;
+}
+
 // --- contract read ----------------------------------------------------------
 export async function readDonationState(config = DONATIONS_CONFIG) {
-  const contract = await makeTaquito(config).contract.at(config.contractAddress);
+  const toolkit = makeTaquito(config);
+  const chainId = await verifyRpcChain(toolkit, config);
+  const contract = await toolkit.contract.at(config.contractAddress);
   const storage = await contract.storage();
   const count = toNumber(storage.next_donation_id);
   const donations = [];
@@ -81,7 +91,7 @@ export async function readDonationState(config = DONATIONS_CONFIG) {
   }
   return {
     network: config.network,
-    chainId: config.chainId,
+    chainId,
     contractAddress: config.contractAddress,
     nextDonationId: count,
     totalDonatedMutez: String(storage.total_donated ?? 0),
@@ -99,8 +109,11 @@ export async function readDonationState(config = DONATIONS_CONFIG) {
 export async function buildDonationOp({ config = DONATIONS_CONFIG, memo, amountMutez } = {}) {
   if (!config || typeof config.contractAddress !== 'string') throw new Error('Donation contract address is not configured.');
   if (typeof amountMutez !== 'string' || !/^[1-9][0-9]*$/.test(amountMutez)) throw new Error('Donation amount must be a positive integer of mutez.');
+  if (BigInt(amountMutez) > BigInt(Number.MAX_SAFE_INTEGER)) throw new Error('Donation mutez amount exceeds the safe integer Number boundary.');
   const hex = encodeMemo(memo);
-  const contract = await makeTaquito(config).contract.at(config.contractAddress);
+  const toolkit = makeTaquito(config);
+  await verifyRpcChain(toolkit, config);
+  const contract = await toolkit.contract.at(config.contractAddress);
   const entrypoint = contract.methodsObject?.[config.entrypoint];
   if (typeof entrypoint !== 'function') throw new Error('The donation contract on this network does not expose a "' + config.entrypoint + '" entrypoint.');
   const params = await entrypoint(hex).toTransferParams({ amount: Number(amountMutez), mutez: true });
@@ -111,4 +124,10 @@ export async function buildDonationOp({ config = DONATIONS_CONFIG, memo, amountM
     amount: String(params.amount ?? amountMutez),
     parameters: { entrypoint: config.entrypoint, value: params.parameter.value },
   };
+}
+
+// RPC getBalance is the spendable balance; staking balances are excluded.
+export async function readSpendableBalance(address, config = DONATIONS_CONFIG) {
+  const balance = await makeTaquito(config).rpc.getBalance(address);
+  return { address, balance: balance.toString(), observedAt: Date.now() };
 }

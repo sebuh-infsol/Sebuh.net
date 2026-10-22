@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
+import {createNetworkState} from '../src/network-state.mjs';
 import {createController} from '../src/delegation-controller.mjs';
 import {buildDelegationRequest,BAKER,CHAIN} from '../src/delegation-core.mjs';
 
@@ -17,9 +18,9 @@ function header(){
   let controller;
   class Clock extends Date {static now(){return now;}}
   let state={address,network:'mainnet',chainId:CHAIN,balance:'123456789',staked:'999999999999',unstakedFrozen:'555555555555',delegate:BAKER,observedAt:now,bakerDeactivated:true};
-  const client={async requestPermissions(){},async getActiveAccount(){return{address,network:{type:'mainnet'},scopes:['operation_request']};},async disconnect(){},async requestOperation(request){operations.push(request);throw Error('Non-signing fixture');}};
+  const client={async requestPermissions(){},async getActiveAccount(){return{address,network:{type:'mainnet',chainId:'tezos:NetXdQprcVkpaWU'},scopes:['operation_request']};},async disconnect(){},async requestOperation(request){operations.push(request);throw Error('Non-signing fixture');}};
   const source=readFileSync(new URL('../src/wallet-ui.mjs',import.meta.url),'utf8').replace(/^import .*;\n/gm,'').replace("import('./octez-client.mjs')",'loadClient()');
-  runInNewContext(source,{document:{get hidden(){return hidden;},getElementById:el,querySelectorAll:()=>[],addEventListener(name,fn){events.set(name,fn);}},Date:Clock,BAKER,buildDelegationRequest,
+  runInNewContext(source,{document:{get hidden(){return hidden;},getElementById:el,querySelectorAll:()=>[],addEventListener(name,fn){events.set(name,fn);}},Date:Clock,BAKER,buildDelegationRequest,networkState:createNetworkState(),
     setTimeout(fn,delay){const id=++nextTimer;timers.set(id,{fn,at:now+delay});return id;},clearTimeout(id){timers.delete(id);},setInterval(fn,delay){intervals.push({fn,delay});},
     createController(options){controller=createController({...options,loadState:async()=>{loads++;return state;}});return controller;},async loadClient(){return{makeClient:()=>client};}
   });

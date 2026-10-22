@@ -5,7 +5,7 @@ import {DONATIONS_CONFIG} from './donations-config.mjs';
 
 export function makeClient() {
   return new DAppClient({name:'Sebuh.net',appUrl:location.origin,
-    network:{type:NetworkType.MAINNET,rpcUrl:RPC},enableMetrics:false,disableWalletConnect:true});
+    network:{type:NetworkType.MAINNET,rpcUrl:RPC,chainId:'tezos:NetXdQprcVkpaWU'},enableMetrics:false,disableWalletConnect:true});
 }
 
 // Separate, shadownet-scoped client for the contract donation app. Kept apart

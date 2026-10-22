@@ -1,6 +1,8 @@
 import {BAKER,buildDelegationRequest} from './delegation-core.mjs';
 import {createController} from './delegation-controller.mjs';
+import {networkState} from './network-state.mjs';
 const $=id=>document.getElementById(id);
+const networkSelect=$('network-select');
 let controller;
 let loading=false;
 const status=$('wallet-status');
@@ -22,7 +24,19 @@ const donationStatus=$('donation-status');
 const donationHash=$('donation-operation');
 const presets=[...document.querySelectorAll('[data-donation-amount]')];
 let headerExpiry;
+networkState.addGuard(() => controller?.model.uncertain ? 'wallet uncertain' : controller?.model.busy || controller?.model.hash ? 'wallet pending' : null);
+networkState.onChange(() => {
+  const old = controller; controller = null; loading = false;
+  consent.checked = false; donationConsent.checked = false;
+  networkSelect.value = networkState.selected().network;
+  if (old) { try { old.disconnect().catch(() => {}); } catch {} }
+  render();
+});
 function renderHeader(model={}) {
+  if (!networkState.legacyAllowed()) {
+    const selected = networkState.pairing()?.model?.();
+    model = selected ? {...selected, state: selected.balanceState} : {};
+  }
   globalThis.clearTimeout?.(headerExpiry);
   const details=$('wallet-header-details');
   const address=$('wallet-header-address');
@@ -45,18 +59,24 @@ function renderHeader(model={}) {
   const fresh=!model.error && Date.now()-state.observedAt<=120000;
   balance.textContent=fresh?'Available: '+value:'Last checked: '+value+' — reload or Refresh account to update';
   balance.title='Spendable balance only, checked '+new Date(state.observedAt).toISOString()+'. Staked and frozen funds excluded. No automatic polling.';
-  if(fresh)headerExpiry=globalThis.setTimeout?.(()=>renderHeader(model),Math.max(1,state.observedAt+120001-Date.now()));
+  if(fresh)headerExpiry=globalThis.setTimeout?.(()=>renderHeader(controller?.model),Math.max(1,state.observedAt+120001-Date.now()));
 }
 document.addEventListener?.('visibilitychange',()=>renderHeader(controller?.model));
+networkState.onSession(() => render(controller?.model));
 
 function render(model={account:null,state:null,review:null,donationReview:null,busy:false,error:null,hash:null}) {
   renderHeader(model);
   const busy=model.busy || loading;
-  const blocked=busy || Boolean(model.hash) || model.uncertain;
-  connect.disabled=busy || Boolean(model.account);
-  connect.textContent=busy && !model.account?'Waiting for wallet…':'Connect wallet';
-  disconnect.hidden=!controller;disconnect.disabled=busy;
-  refresh.hidden=!model.account;refresh.disabled=busy;
+  // Legacy delegation/direct gifts are mainnet-only: fail closed elsewhere.
+  const legacy=networkState.legacyAllowed();
+
+  const blocked=busy || Boolean(model.hash) || model.uncertain || !legacy;
+  const session = legacy ? model : (networkState.pairing()?.model?.() || {});
+  const pairingBlocked = session.busy || session.hash || session.uncertain || loading;
+  connect.disabled=pairingBlocked || Boolean(session.account) || (!legacy && !networkState.pairing());
+  connect.textContent=(session.busy || loading) && !session.account?'Waiting for wallet…':session.account?'Connected':'Connect wallet';
+  disconnect.hidden=legacy ? !controller : !session.account;disconnect.disabled=pairingBlocked;
+  refresh.hidden=!session.account;refresh.disabled=pairingBlocked;
   consent.disabled=busy || !model.account;
   let reason='Connect your wallet to read its mainnet delegation and staking state.';
   let eligible=false;
@@ -85,6 +105,7 @@ function render(model={account:null,state:null,review:null,donationReview:null,b
   }
   if(model.hash) reason='The wallet returned an operation hash. Inclusion/success is not yet verified by this page. Review it in your wallet or explorer.';
   const working=loading?'Loading Octez Connect…':'Working… Signing happens only if you explicitly request wallet approval.';
+  if(!legacy)reason='Mainnet delegation and direct gifts are disabled on '+networkState.selected().label+'. Select Mainnet to use them.';
   status.textContent=model.error || (busy ? working : reason);
   donationAmount.disabled=blocked;
   donationConsent.disabled=blocked || !model.account;
@@ -102,26 +123,45 @@ function render(model={account:null,state:null,review:null,donationReview:null,b
     $('donation-review-amount').textContent=model.donationReview.amountXTZ+' XTZ';
   }
   let donationReason=model.account?'Choose an amount, acknowledge the permanent gift and review. Nothing is sent until you request and approve it in your wallet.':'Choose an amount to connect your wallet. Connecting only pairs the wallet; it does not send a donation.';
-  if(model.hash)donationReason=reason;
+  if(model.hash || !legacy)donationReason=reason;
   else if(model.uncertain)donationReason='Check your wallet and explorer before disconnecting and reconnecting. The previous request may have been submitted. No automatic retry.';
   donationStatus.textContent=model.error || (busy?working:donationReason);
 }
 async function act(fn) {
+  const epoch = networkState.epoch();
   try{await fn();}
-  catch(e){status.textContent=donationStatus.textContent=e.message || 'Wallet action failed. Check your wallet before retrying.';}
+  catch(e){if (networkState.isCurrent(epoch)) status.textContent=donationStatus.textContent=e.message || 'Wallet action failed. Check your wallet before retrying.';}
 }
 async function connectWallet() {
-  if(loading || controller?.model.busy || controller?.model.account)return;
+  if (!networkState.legacyAllowed()) return networkState.pairing()?.connect();
+  if(loading || controller?.model.busy || controller?.model.account || controller?.model.hash || controller?.model.uncertain || !networkState.legacyAllowed())return;
+  const epoch=networkState.epoch();
   loading=true;render(controller?.model);
   try {
-    if(!controller){const{makeClient}=await import('./octez-client.mjs');controller=createController({client:makeClient(),onChange:render});}
+    if(!controller){const{makeClient}=await import('./octez-client.mjs');if(!networkState.isCurrent(epoch))return;controller=createController({client:makeClient(),onChange:(model)=>{if(networkState.isCurrent(epoch))render(model);}});}
     consent.checked=false;donationConsent.checked=false;
     await controller.connect();
-  } finally {loading=false;render(controller?.model);}
+  } catch (e) {
+    const failed = controller;
+    if (networkState.isCurrent(epoch) && failed) {
+      try { await failed.disconnect(); } catch {}
+      if (networkState.isCurrent(epoch) && controller === failed) controller = null;
+    }
+    throw e;
+  } finally {if(networkState.isCurrent(epoch)){loading=false;render(controller?.model);}}
 }
 connect.addEventListener('click',()=>act(connectWallet));
-disconnect.addEventListener('click',()=>act(async()=>{await controller.disconnect();consent.checked=false;donationConsent.checked=false;render(controller.model);}));
-refresh.addEventListener('click',()=>act(async()=>{consent.checked=false;donationConsent.checked=false;await controller.refresh();}));
+// Selecting a network never pairs or signs. It refuses while a request is
+// pending/uncertain, then drops the legacy session so reconnect is explicit.
+networkSelect?.addEventListener('change',()=>act(async()=>{
+  try{networkState.select(networkSelect.value);}
+  catch(e){networkSelect.value=networkState.selected().network;throw e;}
+  consent.checked=false;donationConsent.checked=false;
+
+  render(controller?.model);
+}));
+disconnect.addEventListener('click',()=>act(async()=>{if (!networkState.legacyAllowed()) return networkState.pairing()?.disconnect(); const ctl=controller; const epoch=networkState.epoch(); if (!ctl || ctl.model.busy || ctl.model.hash || ctl.model.uncertain) return; await ctl.disconnect();if (!networkState.isCurrent(epoch) || controller!==ctl) return; consent.checked=false;donationConsent.checked=false;render(ctl.model);}));
+refresh.addEventListener('click',()=>act(async()=>{if (!networkState.legacyAllowed()) return networkState.pairing()?.refresh(); if (!controller || controller.model.busy || controller.model.hash || controller.model.uncertain) return; consent.checked=false;donationConsent.checked=false;await controller.refresh();}));
 consent.addEventListener('change',()=>{if(controller){controller.cancelReview();render(controller.model);}});
 review.addEventListener('click',()=>act(()=>controller.review(consent.checked)));
 cancel.addEventListener('click',()=>controller.cancelReview());

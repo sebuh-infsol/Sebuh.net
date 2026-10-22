@@ -5,7 +5,7 @@ import {buildDonationRequest} from '../src/donation-core.mjs';
 import {createController} from '../src/delegation-controller.mjs';
 
 const address='tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb';
-const account=()=>({address,network:{type:'mainnet'},scopes:['operation_request']});
+const account=()=>({address,network:{type:'mainnet',chainId:'tezos:NetXdQprcVkpaWU'},scopes:['operation_request']});
 const state=()=>({address,network:'mainnet',chainId:CHAIN,balance:'2000000000',staked:'0',unstakedFrozen:'0',delegate:null,observedAt:Date.now()});
 // Deliberately require exactly one grant: duplicate operation_request is rejected.
 const invalidScopes=[
@@ -33,7 +33,7 @@ test('controller rejects non-exact grants at connect, review and each submission
       await assert.rejects(()=>x.controller.connect(),/operation permission only/);
       assert.throws(()=>review(x.controller,kind));
       await assert.rejects(()=>submit(x.controller,kind));
-      assert.deepEqual(x.permissions,[{scopes:['operation_request']}]);
+      assert.deepEqual(x.permissions,[{scopes:['operation_request'],networks:[{chainId:'tezos:NetXdQprcVkpaWU'}]}]);
       assert.equal(x.operations.length,0);
     });
     await t.test(`${kind}: ${label}: invalid at review`,async()=>{

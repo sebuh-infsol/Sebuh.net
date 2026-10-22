@@ -11,14 +11,14 @@
   <script src="./site.js" defer></script>
   <script type="module" src="./wallet-ui.js"></script>
   <script type="module" src="./restart-ui.js"></script>
-  <script type="module" src="./donations-ui.js"></script>
+  <script type="module" src="./donations-boot.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <div class="wrap">
     <header class="masthead">
       <div class="topnav" aria-label="Wallet connection">
-        <div class="header-wallet"><div class="wallet-buttons"><button type="button" class="button" id="wallet-connect">Connect wallet</button><button type="button" class="button secondary" id="wallet-disconnect" hidden>Disconnect</button><button type="button" class="button secondary" id="wallet-refresh" hidden>Refresh account</button></div>
+        <div class="header-wallet"><label class="network-select" for="network-select"><span>Network</span><select id="network-select"><option value="mainnet" selected>Mainnet</option><option value="shadownet">Shadownet</option></select></label><div class="wallet-buttons"><button type="button" class="button" id="wallet-connect">Connect wallet</button><button type="button" class="button secondary" id="wallet-disconnect" hidden>Disconnect</button><button type="button" class="button secondary" id="wallet-refresh" hidden>Refresh account</button></div>
           <div id="wallet-header-details" class="wallet-header-details" role="status" aria-live="polite" hidden><span id="wallet-header-address"></span><span id="wallet-header-balance"></span></div>
         </div>
       </div>
@@ -107,15 +107,19 @@
     </section>
 
       <section class="donations-app section" id="donations-app" aria-labelledby="donations-title">
-        <p class="eyebrow">Contract donations · Tezos shadownet testnet</p>
+        <p class="eyebrow" id="donations-kicker">Contract donations · Tezos Shadownet testnet</p>
         <h2 id="donations-title">Donations app</h2>
-        <p class="action-terms">Live totals and a per-donor ledger are read straight from the <code>donations</code> smart contract by Taquito. A <strong>give</strong> is a contract call your wallet signs — the contract, not a single address, holds the funds. This is the shadownet testnet deployment; the same UI points at mainnet when the contract is deployed there.</p>
+        <div class="donations-network-row">
+          <p class="donations-network-badge" id="donations-network-badge" role="status" aria-live="polite">TESTNET — no real value</p>
+        </div>
+        <p class="action-terms" id="donations-copy">Live totals and a per-donor ledger are read straight from the <code>donations</code> smart contract by Taquito. A <strong>give</strong> is a contract call your wallet signs — the contract, not a single address, holds the funds. Shadownet testnet donations require a fresh storage check matching the approved test5 beneficiary before review and submission. Mainnet contract donations remain disabled.</p>
         <div class="wallet-panel action-card" id="donations-state">
           <div class="donations-totals">
             <div class="donations-total-cell"><span class="donations-total" id="donations-total">Not loaded</span><span class="donations-label">Total raised</span></div>
             <div class="donations-total-cell"><span class="donations-count" id="donations-count">—</span><span class="donations-label">Donations</span></div>
           </div>
-          <p id="donations-status" role="status" aria-live="polite">Connect a shadownet wallet to see live donations and give. Connecting only pairs your wallet — it does not send anything.</p>
+          <button type="button" class="button" id="donations-load">Load the live donations app</button>
+          <p id="donations-status" role="status" aria-live="polite">Load the live donations app to read the Shadownet testnet contract. Connecting only pairs your wallet — it does not send anything.</p>
           <ul class="donations-list" id="donations-list"></ul>
         </div>
         <div class="donation-wallet wallet-controls" aria-labelledby="donations-form-title">
@@ -127,13 +131,13 @@
             <button type="button" class="button secondary" id="donations-disconnect" hidden>Disconnect</button>
           </div>
           <div class="donations-presets" aria-label="Choose a donation amount">
-            <button type="button" class="button secondary donations-preset" data-donations-amount="1" aria-pressed="false">1 ꜩ</button>
-            <button type="button" class="button secondary donations-preset" data-donations-amount="10" aria-pressed="false">10 ꜩ</button>
+            <button type="button" class="button secondary donations-preset" data-donations-amount="1" aria-pressed="false" disabled>1 ꜩ</button>
+            <button type="button" class="button secondary donations-preset" data-donations-amount="10" aria-pressed="false" disabled>10 ꜩ</button>
           </div>
           <label for="donations-memo">Memo <span class="muted">(optional · on-chain, up to 100 chars)</span></label>
           <input type="text" id="donations-memo" maxlength="100" autocomplete="off" spellcheck="false" aria-describedby="donations-memo-hint">
           <p id="donations-memo-hint">A short note to the baker, stored publicly on-chain with your donation.</p>
-          <label for="donations-amount">Amount · ꜩ (shadownet testnet)</label>
+          <label for="donations-amount" id="donations-amount-label">Amount · ꜩ (Shadownet testnet)</label>
           <input type="text" id="donations-amount" inputmode="decimal" maxlength="22" value="1" autocomplete="off" spellcheck="false" aria-describedby="donations-fees">
           <p id="donations-fees">Shadownet testnet ꜩ have no real-world value. Network fees are extra and estimated by your wallet.</p>
           <label class="consent"><input type="checkbox" id="donations-consent" disabled><span>I understand this is a permanent gift to the donations contract, with no repayment or rewards. I will check the amount, recipient and extra network fees in my wallet.</span></label>

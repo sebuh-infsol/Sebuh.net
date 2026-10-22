@@ -18,7 +18,7 @@ function state() {
 test('only explicit, acknowledged mainnet delegation can reach the wallet', async () => {
   const m = await core();
   const s = state();
-  const account = {address:SOURCE, network:{type:'mainnet'}, scopes:['operation_request']};
+  const account = {address:SOURCE, network:{type:'mainnet',chainId:'tezos:NetXdQprcVkpaWU'}, scopes:['operation_request']};
   assert.deepEqual(m.buildDelegationRequest({account, state:s, acknowledged:true, reviewed:true}), {
     operationDetails:[{kind:'delegation',source:SOURCE,delegate:TARGET}]
   });

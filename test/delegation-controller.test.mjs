@@ -7,7 +7,7 @@ const baker='tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP';
 async function setup(){
   assert.ok(existsSync(url),'delegation controller is not implemented');
   const {createController}=await import(url);
-  const account={address,network:{type:'mainnet'},scopes:['operation_request']};
+  const account={address,network:{type:'mainnet',chainId:'tezos:NetXdQprcVkpaWU'},scopes:['operation_request']};
   let active=account,loadCount=0,permission=null,disconnects=0;
   const operations=[];
   const client={requestPermissions:async p=>{permission=p;},getActiveAccount:async()=>active,
@@ -24,7 +24,7 @@ async function setup(){
 test('connect and review never send operations; explicit confirmation sends exactly one delegation',async()=>{
   const x=await setup();
   await x.controller.connect();
-  assert.deepEqual(x.permission,{scopes:['operation_request']});
+  assert.deepEqual(x.permission,{scopes:['operation_request'],networks:[{chainId:'tezos:NetXdQprcVkpaWU'}]});
   assert.equal(x.operations.length,0);
   assert.throws(()=>x.controller.review(false));
   x.controller.review(true);

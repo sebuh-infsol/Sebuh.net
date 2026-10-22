@@ -4,11 +4,11 @@ import {createController} from '../src/delegation-controller.mjs';
 import {BAKER,CHAIN} from '../src/delegation-core.mjs';
 const address='tz1VSUr8wwNhLAzempoch5d6hLRiTh8Cjcjb';
 async function setup(){
-  const account={address,network:{type:'mainnet'},scopes:['operation_request']};
+  const account={address,network:{type:'mainnet',chainId:'tezos:NetXdQprcVkpaWU'},scopes:['operation_request']};
   let active=account,loads=0;
   const operations=[];
   const state={address,network:'mainnet',chainId:CHAIN,balance:'2000000000',staked:'0',unstakedFrozen:'0',delegate:null};
-  const client={requestPermissions:async p=>assert.deepEqual(p,{scopes:['operation_request']}),getActiveAccount:async()=>active,disconnect:async()=>{},requestOperation:async p=>{operations.push(p);return {transactionHash:'o'+'a'.repeat(50)};}};
+  const client={requestPermissions:async p=>assert.deepEqual(p,{scopes:['operation_request'],networks:[{chainId:'tezos:NetXdQprcVkpaWU'}]}),getActiveAccount:async()=>active,disconnect:async()=>{},requestOperation:async p=>{operations.push(p);return {transactionHash:'o'+'a'.repeat(50)};}};
   const controller=createController({client,loadState:async()=>{loads++;return {...state,observedAt:Date.now()};}});
   return {account,client,controller,state,operations,setActive:a=>active=a,get loads(){return loads;}};
 }

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
+import {createNetworkState} from '../src/network-state.mjs';
 import {createController} from '../src/delegation-controller.mjs';
 import {BAKER,CHAIN,buildDelegationRequest} from '../src/delegation-core.mjs';
 
@@ -18,8 +19,8 @@ function integratedUI(){
   };
   const presets=['10','100','1000'].map(value=>Object.assign(element('preset-'+value),{dataset:{donationAmount:value}}));
   const client={
-    async requestPermissions(p){permissions.push(p);assert.deepEqual(p,{scopes:['operation_request']});},
-    async getActiveAccount(){return {address,network:{type:'mainnet'},scopes:['operation_request']};},
+    async requestPermissions(p){permissions.push(p);assert.deepEqual(p,{scopes:['operation_request'],networks:[{chainId:'tezos:NetXdQprcVkpaWU'}]});},
+    async getActiveAccount(){return {address,network:{type:'mainnet',chainId:'tezos:NetXdQprcVkpaWU'},scopes:['operation_request']};},
     async disconnect(){},
     async requestOperation(p){operations.push(p);return {transactionHash:'o'+'a'.repeat(50)};}
   };
@@ -27,7 +28,7 @@ function integratedUI(){
     .replace(/^import .*;\n/gm,'').replace("import('./octez-client.mjs')",'loadClient()');
   runInNewContext(source,{
     document:{getElementById:element,querySelectorAll:()=>presets,addEventListener(){}},
-    BAKER,buildDelegationRequest,
+    BAKER,buildDelegationRequest,networkState:createNetworkState(),
     createController:options=>(controller=createController({...options,loadState:async()=>({address,network:'mainnet',chainId:CHAIN,balance:'2000000000',staked:'0',unstakedFrozen:'0',delegate:null,observedAt:Date.now()})})),
     async loadClient(){loads++;return {makeClient:()=>client};}
   },{filename:'wallet-ui.mjs'});
