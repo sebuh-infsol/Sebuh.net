@@ -11,7 +11,7 @@
   <script src="./site.js" defer></script>
   <script type="module" src="./wallet-ui.js"></script>
   <script type="module" src="./restart-ui.js"></script>
-  <script type="module" src="./donations-ui.js"></script>
+  <script type="module" src="./donations-boot.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
@@ -27,13 +27,13 @@
       <div class="rail"><div>
         <span>Sebuh Honarchian, baker</span>
         <span class="mono">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</span>
-        <span class="status"><i aria-hidden="true"></i>Restart in progress</span>
+        <span class="status"><i aria-hidden="true"></i>Baker online</span>
       </div></div>
       <div class="restart-funding" id="restart-funding" role="region" aria-labelledby="restart-heading">
-        <div class="funding-top"><div><p class="eyebrow">Baker restart fund · Public on-chain balances</p><h2 id="restart-heading"><span id="restart-current">Checking…</span> <span class="funding-target">of <span id="restart-goal">3,800 XTZ</span></span></h2></div><a class="btn btn-ghost" href="#donate">Help grow the restart fund ↗</a></div>
+        <div class="funding-top"><div><p class="eyebrow">Baker fund · Public on-chain balances</p><h2 id="restart-heading"><span id="restart-current">Checking…</span> <span class="funding-target">of <span id="restart-goal">3,800 XTZ</span></span></h2></div><a class="btn btn-ghost" href="#donate">Help grow the baker fund ↗</a></div>
         <progress class="funding-progress" id="restart-progress" max="10000" aria-labelledby="restart-heading" aria-describedby="restart-explainer restart-updated" hidden></progress>
         <div class="funding-totals"><strong id="restart-percent">—</strong><span id="restart-remaining">Remaining amount pending verification</span><span id="restart-breakdown">Spendable balance + the baker’s own stake</span></div>
-        <p id="restart-explainer" class="funding-note"><strong>Funding target only.</strong> This is the earlier 3,800 XTZ own-funds restart target, not a protocol eligibility threshold. It excludes delegators’ funds and pending exchange withdrawals. Holding funds does not stake them, activate the baker or guarantee baking rights.</p>
+        <p id="restart-explainer" class="funding-note"><strong>Funding target only.</strong> This is the 3,800 XTZ own-funds target, not a protocol eligibility threshold. It excludes delegators’ funds and pending exchange withdrawals. Holding funds does not stake them, activate the baker or guarantee baking rights.</p>
         <div class="funding-footer"><div><p id="restart-data-status" role="status" aria-live="polite">JavaScript is needed for live balances. No wallet connection is required.</p><p id="restart-updated">No successful update yet.</p><p class="funding-note">Figures load from TzKT’s public mainnet RPC; that service can see your network metadata. This balance is not a donation-raised total.</p></div><button class="button secondary" type="button" id="restart-refresh">Refresh balance</button></div>
       </div>
     </header>
@@ -46,7 +46,7 @@
             <span class="cmyk-head"><span class="paper">A longer runway</span><span class="plate plate-c" aria-hidden="true">A longer runway</span><span class="plate plate-m" aria-hidden="true">A longer runway</span><span class="plate plate-y" aria-hidden="true">A longer runway</span></span>
             <span class="cmyk-head ital"><span class="paper">for building.</span><span class="plate plate-c" aria-hidden="true">for building.</span><span class="plate plate-m" aria-hidden="true">for building.</span><span class="plate plate-y" aria-hidden="true">for building.</span></span>
           </h1>
-          <p class="lead">I’m Sebuh Honarchian. I’m rebuilding my Tezos baker and developing the tools around it. If you want to support that work, you can delegate to Sebuh.net.</p>
+          <p class="lead">I’m Sebuh Honarchian. I run a Tezos baker and develop the tooling around it. If you want to support that work, you can delegate to Sebuh.net.</p>
           <div class="actions"><a class="btn btn-primary" href="#support-actions">See how support works ↓</a><a class="btn btn-ghost" href="#policy">Reward policy</a></div>
           <p class="note">With ordinary delegation, your XTZ stay in your wallet. Donations below are separate gifts.</p>
         </div>
@@ -54,7 +54,7 @@
           <div class="hero-mark" aria-hidden="true"><img class="hero-logo" src="./images/tezos-cmyk.svg" alt="" decoding="async"></div>
           <h2>Built independently.<br>Supported by you.</h2>
           <p>Not another promise of higher yield. A straightforward way to back a developer working on Tezos.</p>
-          <p class="restart"><strong>Restart in progress.</strong> Rebuilding before resuming baking. Balance updates above do not prove baking readiness.</p>
+          <p class="restart"><strong>Baker online.</strong> Baking, with delegation open to supporters. Balance updates above do not prove baking performance.</p>
         </aside>
       </section>
     <section class="support-actions section" id="support-actions" aria-labelledby="actions-title">
@@ -71,7 +71,7 @@
               <a href="https://tzkt.io/tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP/info" target="_blank" rel="noopener noreferrer" style="font-size:14px">Check the delegate on TzKT ↗</a>
             </div>
       <div class="wallet-controls">
-        <dl><dt>Connected account</dt><dd id="wallet-account">Not connected</dd><dt>Current delegate</dt><dd id="wallet-delegate">Not checked</dd></dl><p id="wallet-baker-status">The baker is restarting. No rewards or rights are promised.</p>
+        <dl><dt>Connected account</dt><dd id="wallet-account">Not connected</dd><dt>Current delegate</dt><dd id="wallet-delegate">Not checked</dd></dl><p id="wallet-baker-status">The baker is online. No delegation rewards are paid.</p>
         <label class="consent"><input type="checkbox" id="delegation-consent" disabled><span>I understand that ordinary delegation to Sebuh.net pays me no delegation rewards. Retained baking income supports development. Network fees apply.</span></label>
         <button type="button" class="button" id="delegation-review" disabled>Review delegation</button>
         <div id="delegation-summary" class="delegation-summary" hidden><h3>Review before opening your wallet</h3><dl><dt>Source account</dt><dd id="review-source"></dd><dt>Previous delegate</dt><dd id="review-previous"></dd><dt>New delegate</dt><dd id="review-target"></dd></dl><p>Mainnet delegation only. No XTZ transfer or staking request. Your wallet will show network fees and ask for approval. Switching an account with staked or frozen unstaking funds is blocked here; manage it directly in your wallet instead.</p><button type="button" class="button" id="delegation-confirm" disabled>Request wallet approval</button><button type="button" class="button secondary" id="delegation-cancel">Cancel</button></div>
@@ -79,7 +79,7 @@
       </div>
     </section>
       <section class="stake action-card" id="stake" aria-labelledby="stake-title">
-        <p class="eyebrow">Direct staking · Separate from delegation</p><h2 id="stake-title">Stake</h2><p><strong>Staking is not enabled in this connector.</strong> The baker is still restarting. This panel does not prepare or submit staking operations.</p><p>Direct stakers receive protocol-distributed rewards under the baker’s actual on-chain commission and parameters. Staked funds carry slashing risk and withdrawal delays.</p><button type="button" class="button secondary" id="staking-unavailable" disabled>Staking not enabled yet</button><p>Check the baker’s status and current on-chain parameters before managing staking in your own wallet.</p><a class="explorer" href="https://docs.tezos.com/using/staking" target="_blank" rel="noopener noreferrer">Read the Tezos staking guide <span aria-hidden="true">↗</span></a>
+        <p class="eyebrow">Direct staking · Separate from delegation</p><h2 id="stake-title">Stake</h2><p><strong>Staking is not enabled in this connector.</strong> This panel does not prepare or submit staking operations; manage staking in your own wallet.</p><p>Direct stakers receive protocol-distributed rewards under the baker’s actual on-chain commission and parameters. Staked funds carry slashing risk and withdrawal delays.</p><button type="button" class="button secondary" id="staking-unavailable" disabled>Staking not enabled yet</button><p>Check the baker’s status and current on-chain parameters before managing staking in your own wallet.</p><a class="explorer" href="https://docs.tezos.com/using/staking" target="_blank" rel="noopener noreferrer">Read the Tezos staking guide <span aria-hidden="true">↗</span></a>
       </section>
       <section class="donation action-card" id="donate" aria-labelledby="donation-title">
       <div><p class="eyebrow">A direct gift · Optional</p><h2 id="donation-title">Donate</h2><p>Help grow the baker’s own stake and baking power with a one-time donation. Suggested gifts:</p><ul class="donation-amounts" aria-label="Choose a donation amount and connect if needed"><li><button type="button" class="button secondary" data-donation-amount="10" aria-pressed="true">10 XTZ</button></li><li><button type="button" class="button secondary" data-donation-amount="100" aria-pressed="false">100 XTZ</button></li><li><button type="button" class="button secondary" data-donation-amount="1000" aria-pressed="false">1000 XTZ</button></li></ul><p>Any amount is welcome. Donations are intended to help grow the baker’s own stake. They do not automatically stake funds, activate the baker or guarantee baking rights; operator action and protocol requirements still apply.</p><p class="support-disclosure"><strong>A donation is not delegation or direct staking.</strong> You transfer ownership of the donated XTZ to Sebuh.net, with no entitlement to repayment or rewards. Only give what you are comfortable giving permanently.</p></div>
@@ -107,15 +107,23 @@
     </section>
 
       <section class="donations-app section" id="donations-app" aria-labelledby="donations-title">
-        <p class="eyebrow">Contract donations · Tezos shadownet testnet</p>
+        <p class="eyebrow" id="donations-kicker">Contract donations · Tezos Shadownet testnet</p>
         <h2 id="donations-title">Donations app</h2>
-        <p class="action-terms">Live totals and a per-donor ledger are read straight from the <code>donations</code> smart contract by Taquito. A <strong>give</strong> is a contract call your wallet signs — the contract, not a single address, holds the funds. This is the shadownet testnet deployment; the same UI points at mainnet when the contract is deployed there.</p>
+        <div class="donations-network-row">
+          <div class="donations-network" role="group" aria-label="Donations network">
+            <button type="button" class="button secondary donations-network-option" id="donations-network-shadownet" data-network="shadownet" aria-pressed="true">Shadownet</button>
+            <button type="button" class="button secondary donations-network-option" id="donations-network-mainnet" data-network="mainnet" aria-pressed="false">Mainnet</button>
+          </div>
+          <p class="donations-network-badge" id="donations-network-badge" role="status" aria-live="polite">TESTNET — no real value</p>
+        </div>
+        <p class="action-terms" id="donations-copy">Live totals and a per-donor ledger are read straight from the <code>donations</code> smart contract by Taquito. A <strong>give</strong> is a contract call your wallet signs — the contract, not a single address, holds the funds. This is the Shadownet testnet deployment; the same UI points at mainnet when the contract is deployed there.</p>
         <div class="wallet-panel action-card" id="donations-state">
           <div class="donations-totals">
             <div class="donations-total-cell"><span class="donations-total" id="donations-total">Not loaded</span><span class="donations-label">Total raised</span></div>
             <div class="donations-total-cell"><span class="donations-count" id="donations-count">—</span><span class="donations-label">Donations</span></div>
           </div>
-          <p id="donations-status" role="status" aria-live="polite">Connect a shadownet wallet to see live donations and give. Connecting only pairs your wallet — it does not send anything.</p>
+          <button type="button" class="button" id="donations-load">Load the live donations app</button>
+          <p id="donations-status" role="status" aria-live="polite">Load the live donations app to read the Shadownet testnet contract. Connecting only pairs your wallet — it does not send anything.</p>
           <ul class="donations-list" id="donations-list"></ul>
         </div>
         <div class="donation-wallet wallet-controls" aria-labelledby="donations-form-title">
@@ -127,13 +135,13 @@
             <button type="button" class="button secondary" id="donations-disconnect" hidden>Disconnect</button>
           </div>
           <div class="donations-presets" aria-label="Choose a donation amount">
-            <button type="button" class="button secondary donations-preset" data-donations-amount="1" aria-pressed="false">1 ꜩ</button>
-            <button type="button" class="button secondary donations-preset" data-donations-amount="10" aria-pressed="false">10 ꜩ</button>
+            <button type="button" class="button secondary donations-preset" data-donations-amount="1" aria-pressed="false" disabled>1 ꜩ</button>
+            <button type="button" class="button secondary donations-preset" data-donations-amount="10" aria-pressed="false" disabled>10 ꜩ</button>
           </div>
           <label for="donations-memo">Memo <span class="muted">(optional · on-chain, up to 100 chars)</span></label>
           <input type="text" id="donations-memo" maxlength="100" autocomplete="off" spellcheck="false" aria-describedby="donations-memo-hint">
           <p id="donations-memo-hint">A short note to the baker, stored publicly on-chain with your donation.</p>
-          <label for="donations-amount">Amount · ꜩ (shadownet testnet)</label>
+          <label for="donations-amount" id="donations-amount-label">Amount · ꜩ (Shadownet testnet)</label>
           <input type="text" id="donations-amount" inputmode="decimal" maxlength="22" value="1" autocomplete="off" spellcheck="false" aria-describedby="donations-fees">
           <p id="donations-fees">Shadownet testnet ꜩ have no real-world value. Network fees are extra and estimated by your wallet.</p>
           <label class="consent"><input type="checkbox" id="donations-consent" disabled><span>I understand this is a permanent gift to the donations contract, with no repayment or rewards. I will check the amount, recipient and extra network fees in my wallet.</span></label>
@@ -171,7 +179,7 @@
         <div class="work-list">
           <article>
             <span class="cmyk-num" aria-hidden="true"><span class="paper">1</span><span class="plate plate-c">1</span><span class="plate plate-m">1</span><span class="plate plate-y">1</span></span>
-            <div><h3>Bringing the baker back</h3><p class="body">Rebuilding the node, DAL and hardware-backed signing setup, with an emphasis on careful operations and documented recovery.</p><span class="tag tag-accent-2">In progress</span></div>
+            <div><h3>Running the baker</h3><p class="body">Operating the node, DAL and hardware-backed signing setup, with an emphasis on careful operations and documented recovery.</p><span class="tag tag-accent-2">Online</span></div>
           </article>
           <article>
             <span class="cmyk-num" aria-hidden="true"><span class="paper">2</span><span class="plate plate-c">2</span><span class="plate plate-m">2</span><span class="plate plate-y">2</span></span>
@@ -219,7 +227,7 @@
           <details><summary>Do you take control of my wallet?</summary><p>No. Ordinary delegation does not transfer ownership or give Sebuh.net permission to spend your funds. Never share a recovery phrase or private key. Connecting is optional; delegation requests are reviewed and approved in your wallet, not signed by our server.</p></details>
           <details><summary>What if I stake instead of just delegating?</summary><p>Staking is a separate action. Protocol-distributed staking rewards still go to stakers under the baker’s active staking parameters, including its commission. Staked funds are subject to slashing and withdrawal delays. Review the current on-chain parameters before staking.</p></details>
           <details><summary>Can I stop supporting the baker?</summary><p>You control your wallet and can change your delegation. If you also staked funds, changing delegates and withdrawing stake involve additional protocol rules and delays.</p></details>
-          <details><summary>Is Sebuh.net baking right now?</summary><p>The baker is being rebuilt. Activation, funding, eligibility and signing cutover are separate steps. This preview deliberately makes no live uptime, yield or reward claims.</p></details>
+          <details><summary>Is Sebuh.net baking right now?</summary><p>Yes, the baker is online. Funding, eligibility and signing are monitored operations. This site still makes no uptime, yield or reward claims.</p></details>
         </div>
       </section>
     </main>

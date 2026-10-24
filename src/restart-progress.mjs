@@ -1,6 +1,6 @@
 import {BAKER,CHAIN,RPC} from './delegation-core.mjs';
 
-// Funding target from the restart plan, NOT a protocol eligibility threshold.
+// Funding target from the baker funding plan, NOT a protocol eligibility threshold.
 export const GOAL_MUTEZ='3800000000';
 function amount(value){
   if(typeof value!=='string' || !/^\d{1,20}$/.test(value))throw new Error('Invalid public funding amount.');

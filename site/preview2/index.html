@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview 2 · Terminal — Sebuh.net Tezos baker</title>
+<meta name="description" content="Preview 2: terminal status-board style. Sebuh.net Tezos baker is online.">
+<style>
+:root{--bg:#0d1114;--panel:#131a1f;--ink:#d7e3dc;--dim:#7d8b84;--lime:#a3e635;--amber:#f5b942;--red:#ff6b6b;--line:#243027}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 "SFMono-Regular",Consolas,"Courier New",monospace}
+.wrap{max-width:1000px;margin:0 auto;padding:0 20px 60px}
+nav.bar{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line)}
+nav.bar .brand{color:var(--lime);text-decoration:none;font-weight:700;margin-right:auto}
+nav.bar a.link{color:var(--ink);text-decoration:none;padding:10px 4px}
+nav.bar a.link:hover{color:var(--lime)}
+nav.bar .previews{color:var(--dim);font-size:12px}
+nav.bar .previews a{color:var(--lime);padding:10px 4px}
+.boot{color:var(--dim);padding:18px 0 0;font-size:13px}
+h1{font-size:clamp(28px,4.6vw,46px);line-height:1.15;margin:14px 0 8px;letter-spacing:-.01em}
+h1 .ok{color:var(--lime)}
+.sub{color:var(--dim);max-width:60em}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:26px 0}
+.panel{background:var(--panel);border:1px solid var(--line);padding:18px}
+.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin:0 0 10px}
+.panel h2 .n{color:var(--lime)}
+.panel p{margin:0 0 12px;font-size:14px}
+.panel a{color:var(--lime)}
+.panel code{display:block;font-size:13px;overflow-wrap:anywhere;color:var(--ink);background:var(--bg);border:1px solid var(--line);padding:10px;margin:0 0 12px}
+button{background:var(--lime);color:#0d1114;border:0;font:inherit;font-weight:700;padding:12px 16px;cursor:pointer}
+button:hover{background:#c0f566}
+.statusline{display:flex;gap:16px;flex-wrap:wrap;border:1px solid var(--line);background:var(--panel);padding:14px 18px;margin:20px 0;font-size:13px}
+.statusline b{color:var(--lime)}
+.warn{color:var(--amber)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0 30px}
+th{text-align:left;color:var(--dim);font-weight:400;text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:8px;border-bottom:1px solid var(--line)}
+td{padding:10px 8px;border-bottom:1px solid var(--line)}
+td:last-child{text-align:right}
+details{border:1px solid var(--line);margin-bottom:8px;padding:6px 14px;background:var(--panel)}
+details summary{cursor:pointer;padding:8px 0;color:var(--lime)}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--lime)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--lime);margin-right:8px;animation:blink 1.6s steps(2) infinite}
+@media (prefers-reduced-motion:reduce){.dot{animation:none}}
+@keyframes blink{50%{opacity:.25}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="bar" aria-label="Preview navigation">
+    <a class="brand" href="../">sebuh.net:~$</a>
+    <a class="link" href="#delegate">delegate</a>
+    <a class="link" href="#stake">stake</a>
+    <a class="link" href="#donate">donate</a>
+    <a class="link" href="#faq">faq</a>
+    <span class="previews">[<a href="../preview1/">1</a> <a href="../preview2/">2</a> <a href="../preview3/">3</a> <a href="../preview4/">4</a> <a href="../preview5/">5</a>]</span>
+  </nav>
+  <p class="boot">$ baker status --mainnet<br>✓ node: synced&nbsp;&nbsp;✓ signer: ready&nbsp;&nbsp;✓ delegation: open</p>
+  <h1><span class="dot" aria-hidden="true"></span><span class="ok">BAKER ONLINE</span> — delegation open</h1>
+  <p class="sub">Independent Tezos baker run by Sebuh Honarchian. Retained baking income funds open development. Ordinary delegation pays <b>no rewards</b> — support, not yield. Your XTZ stay in your wallet.</p>
+  <div class="statusline"><span>delegate <b>tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</b></span><span>fund target <b>3,800 XTZ</b></span><span class="warn">no payouts</span></div>
+  <div class="grid">
+    <section class="panel" id="delegate">
+      <h2><span class="n">01/</span> delegate</h2>
+      <p>No transfer of ownership. Review and approve in your own wallet.</p>
+      <code id="addr">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</code>
+      <button type="button" id="copy">cp address</button>
+      <p id="copied" role="status"></p>
+      <a href="../#delegate-with-wallet">→ delegate on live site</a>
+    </section>
+    <section class="panel" id="stake">
+      <h2><span class="n">02/</span> stake</h2>
+      <p>Protocol rewards under on-chain commission. Slashing risk + withdrawal delays. Manage in your own wallet.</p>
+      <a href="https://docs.tezos.com/using/staking" rel="noopener">→ staking guide</a>
+    </section>
+    <section class="panel" id="donate">
+      <h2><span class="n">03/</span> donate</h2>
+      <p>One-time gift to the baker’s own stake. Permanent transfer — no repayment, no rewards.</p>
+      <a href="../#donate">→ donate on live site</a>
+    </section>
+  </div>
+  <h2 style="font-size:13px;color:var(--dim);text-transform:uppercase;letter-spacing:.12em">ledger</h2>
+  <table>
+    <thead><tr><th>repo</th><th>what</th><th>state</th></tr></thead>
+    <tbody>
+      <tr><td>infsol/tezos</td><td>octez fork, protocol ideas</td><td style="color:var(--lime)">active</td></tr>
+      <tr><td>sebuh/sebuh.net</td><td>this site</td><td style="color:var(--amber)">redesign in preview</td></tr>
+    </tbody>
+  </table>
+  <div id="faq">
+  <details><summary>$ why no delegation rewards?</summary><p>Retained income funds development instead of payouts. If you want yield, pick a baker with a payout policy.</p></details>
+  <details><summary>$ is the baker running?</summary><p>Yes — online, delegation open. No uptime or yield claims beyond that.</p></details>
+  </div>
+  <footer><span>sebuh.net · preview 2 · terminal</span><a href="../">← live site</a></footer>
+</div>
+<script>document.getElementById('copy').addEventListener('click',async()=>{const t=document.getElementById('addr').textContent;try{await navigator.clipboard.writeText(t);document.getElementById('copied').textContent='copied.';}catch{document.getElementById('copied').textContent='select + copy manually.';}});</script>
+</body>
+</html>

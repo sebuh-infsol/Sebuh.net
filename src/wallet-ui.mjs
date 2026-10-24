@@ -70,7 +70,7 @@ function render(model={account:null,state:null,review:null,donationReview:null,b
   cancel.disabled=busy;
   $('wallet-account').textContent=model.account?.address || 'Not connected';
   $('wallet-delegate').textContent=model.state?(model.state.delegate || 'No delegate'):'Not checked';
-  $('wallet-baker-status').textContent=model.state ? (model.state.bakerDeactivated ? 'Baker inactive / restart in progress. Delegation does not make the baker eligible or active.':'Delegate marked active by the public mainnet RPC. This is not an uptime or rewards guarantee.') : 'The baker is restarting. No rewards or rights are promised.';
+  $('wallet-baker-status').textContent=model.state ? (model.state.bakerDeactivated ? 'Baker inactive. Delegation does not make the baker eligible or active.':'Delegate marked active by the public mainnet RPC. This is not an uptime or rewards guarantee.') : 'The baker is online. No delegation rewards are paid.';
   if(model.review) {
     $('review-source').textContent=model.review.source;
     $('review-previous').textContent=model.review.previousDelegate || 'None';

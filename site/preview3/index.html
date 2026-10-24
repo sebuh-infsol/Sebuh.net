@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview 3 · Ember Editorial — Sebuh.net Tezos baker</title>
+<meta name="description" content="Preview 3: warm editorial style. Sebuh.net Tezos baker is online.">
+<style>
+:root{--bg:#fff;--ink:#2b2118;--soft:#6f6154;--line:#e3d9c8;--ember:#c2410c;--gold:#8a6d1b;--wash:#fdf3e7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 "Iowan Old Style",Palatino,Georgia,serif}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px 70px}
+nav.bar{display:flex;align-items:center;gap:6px 20px;flex-wrap:wrap;padding:20px 0;border-bottom:2px solid var(--ink);max-width:1080px;margin:0 auto;padding-left:24px;padding-right:24px}
+nav.bar .brand{font-size:24px;font-weight:700;text-decoration:none;color:var(--ink);margin-right:auto}
+nav.bar a.link{color:var(--ink);text-decoration:none;font-size:15px;padding:10px 2px;border-bottom:2px solid transparent}
+nav.bar a.link:hover{color:var(--ember);border-color:var(--ember)}
+nav.bar .previews{font-size:13px;color:var(--soft);font-family:Verdana,sans-serif}
+nav.bar .previews a{color:var(--ember);padding:10px 4px}
+.kicker{font:13px Verdana,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--ember);margin:44px 0 12px}
+h1{font-size:clamp(38px,6vw,62px);line-height:1.06;letter-spacing:-.015em;margin:0 0 20px;font-weight:600}
+h1 span{color:var(--ember)}
+.standfirst{font-size:21px;line-height:1.6;color:var(--soft);max-width:34em}
+.rule{border:0;border-top:1px solid var(--line);margin:34px 0}
+.pull{border-left:4px solid var(--ember);padding:4px 0 4px 22px;font-size:22px;font-style:italic;line-height:1.5;margin:30px 0}
+.address-box{background:var(--wash);border:1px solid var(--line);padding:20px 22px;margin:26px 0}
+.address-box code{font:15px "Courier New",monospace;overflow-wrap:anywhere}
+.address-box button{margin-top:12px;font:15px Verdana,sans-serif;background:var(--ember);color:#fff;border:0;padding:12px 20px;cursor:pointer}
+h2{font-size:30px;margin:36px 0 4px}
+h2 small{font:13px Verdana,sans-serif;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:8px}
+p.body{color:var(--soft)}
+a.inline{color:var(--ember)}
+ol.ways{list-style:none;margin:20px 0;padding:0;counter-reset:w}
+ol.ways li{counter-increment:w;padding:22px 0;border-top:1px solid var(--line)}
+ol.ways li::before{content:counter(w,decimal-leading-zero);display:block;font:13px Verdana,sans-serif;letter-spacing:.12em;color:var(--gold);margin-bottom:6px}
+ol.ways h3{margin:0 0 6px;font-size:23px}
+details{padding:10px 0;border-top:1px solid var(--line)}
+details summary{cursor:pointer;font-weight:700;font-size:18px;padding:8px 0}
+footer{margin-top:50px;padding-top:18px;border-top:2px solid var(--ink);font:13px Verdana,sans-serif;color:var(--soft);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+footer a{color:var(--ember)}
+</style>
+</head>
+<body>
+<nav class="bar" aria-label="Preview navigation">
+  <a class="brand" href="../">Sebuh.net</a>
+  <a class="link" href="#delegate">Delegate</a>
+  <a class="link" href="#stake">Stake</a>
+  <a class="link" href="#donate">Donate</a>
+  <a class="link" href="#faq">FAQ</a>
+  <span class="previews">Previews: <a href="../preview1/">1</a> <a href="../preview2/">2</a> <strong>3</strong> <a href="../preview4/">4</a> <a href="../preview5/">5</a></span>
+</nav>
+<div class="wrap">
+  <p class="kicker">Preview 3 · Ember editorial · Baker online</p>
+  <h1>Baking, quietly, <span>in the open.</span></h1>
+  <p class="standfirst">Sebuh Honarchian runs an independent Tezos baker. Delegation is open — not as an investment, but as a way to keep development work alive.</p>
+  <p class="pull">“No delegation payouts. Retained baking income pays for the work itself.”</p>
+  <div class="address-box" id="delegate">
+    <div>Delegate to</div>
+    <code id="addr">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</code><br>
+    <button type="button" id="copy">Copy delegate address</button>
+    <span id="copied" role="status"></span>
+  </div>
+  <h2><small>Three ways to help</small>Choose your support</h2>
+  <ol class="ways">
+    <li id="stake"><h3>Delegate — keep your keys</h3><p class="body">Your XTZ never leave your wallet. Ordinary delegation pays no rewards here; it funds the baker’s work. <a class="inline" href="../#delegate-with-wallet">Delegate on the live site →</a></p></li>
+    <li><h3>Stake — earn protocol rewards</h3><p class="body">Direct staking is separate from delegation: protocol-distributed rewards under on-chain commission, with slashing risk and withdrawal delays. Manage it in your own wallet. <a class="inline" href="https://docs.tezos.com/using/staking" rel="noopener">Staking guide →</a></p></li>
+    <li id="donate"><h3>Donate — a permanent gift</h3><p class="body">A one-time gift to the baker’s own 3,800&nbsp;XTZ fund. Ownership transfers permanently — no repayment, no rewards. <a class="inline" href="../#donate">Donate on the live site →</a></p></li>
+  </ol>
+  <hr class="rule">
+  <h2 id="faq"><small>Small print</small>Asked plainly</h2>
+  <details><summary>Will I receive delegation rewards?</summary><p class="body">No. If payouts are what you want, choose a baker with a payout policy.</p></details>
+  <details><summary>Is the baker running?</summary><p class="body">Yes — online, with delegation open. This page makes no uptime or yield claims.</p></details>
+  <footer><span>sebuh.net · Independent work. Clear terms. Tezos.</span><a href="../">← live site</a></footer>
+</div>
+<script>document.getElementById('copy').addEventListener('click',async()=>{const t=document.getElementById('addr').textContent;try{await navigator.clipboard.writeText(t);document.getElementById('copied').textContent=' Copied.';}catch{document.getElementById('copied').textContent=' Copy manually.';}});</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview 5 · Blueprint — Sebuh.net Tezos baker</title>
+<meta name="description" content="Preview 5: technical blueprint style. Sebuh.net Tezos baker is online.">
+<style>
+:root{--bg:#edf1f6;--panel:#fff;--ink:#16233a;--soft:#4c5b74;--line:#c3ccd9;--blue:#1746a0;--blue-dk:#0f3173;--ok:#0e7a3d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 Verdana,Geneva,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:0 22px 60px}
+nav.bar{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-top:4px solid var(--blue);margin-top:18px;padding:12px 18px}
+nav.bar .brand{background:var(--blue);color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:10px 14px;margin-right:auto}
+nav.bar a.link{color:var(--ink);text-decoration:none;font-size:13px;padding:10px 10px;border:1px solid transparent}
+nav.bar a.link:hover{border-color:var(--blue);color:var(--blue)}
+nav.bar .previews{font-size:12px;color:var(--soft)}
+nav.bar .previews a{color:var(--blue);padding:10px 4px}
+.spec{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;margin:24px 0}
+@media(max-width:760px){.spec{grid-template-columns:1fr}}
+.sheet{background:var(--panel);border:1px solid var(--line);padding:28px;position:relative}
+.sheet::before,.sheet::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--blue)}
+.sheet::before{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.sheet::after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.tag{font:11px "Courier New",monospace;letter-spacing:.14em;color:var(--blue);text-transform:uppercase}
+h1{font-size:clamp(30px,4.4vw,48px);line-height:1.1;margin:10px 0 14px;font-weight:700}
+h1 .ok{color:var(--ok)}
+p.lede{color:var(--soft);max-width:38em}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font:13px "Courier New",monospace;margin:20px 0 0}
+.kv dt{color:var(--soft)}.kv dd{margin:0;overflow-wrap:anywhere}
+code.addr{font:14px "Courier New",monospace;overflow-wrap:anywhere}
+button{background:var(--blue);color:#fff;border:0;font:700 14px Verdana,sans-serif;padding:13px 20px;cursor:pointer}
+button:hover{background:var(--blue-dk)}
+table{width:100%;border-collapse:collapse;background:var(--panel);font-size:13px;margin:0}
+th,td{text-align:left;padding:12px 14px;border:1px solid var(--line)}
+th{background:var(--blue);color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+td.mono{font-family:"Courier New",monospace}
+.note{font-size:12px;color:var(--soft);margin-top:10px}
+details{background:var(--panel);border:1px solid var(--line);margin-top:10px;padding:4px 16px}
+details summary{cursor:pointer;font-weight:700;padding:10px 0}
+footer{margin-top:36px;font-size:12px;color:var(--soft);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+footer a{color:var(--blue)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="bar" aria-label="Preview navigation">
+    <a class="brand" href="../">SEBUH.NET</a>
+    <a class="link" href="#delegate">DELEGATE</a>
+    <a class="link" href="#stake">STAKE</a>
+    <a class="link" href="#donate">DONATE</a>
+    <a class="link" href="#faq">FAQ</a>
+    <span class="previews">[<a href="../preview1/">P1</a> <a href="../preview2/">P2</a> <a href="../preview3/">P3</a> <a href="../preview4/">P4</a> <strong>P5</strong>]</span>
+  </nav>
+  <div class="spec">
+    <section class="sheet">
+      <div class="tag">DWG-SEBUH-05 · Baker online · Tezos mainnet</div>
+      <h1>Status: <span class="ok">OPERATIONAL.</span> Delegation open.</h1>
+      <p class="lede">Independent baker operated by Sebuh Honarchian. Retained baking income funds development and tooling. Ordinary delegation: <strong>no reward payouts</strong>, funds stay in your wallet.</p>
+      <dl class="kv" id="delegate">
+        <dt>DELEGATE</dt><dd><code class="addr" id="addr">tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP</code></dd>
+        <dt>FUND GOAL</dt><dd>3,800 XTZ own funds</dd>
+        <dt>POLICY</dt><dd>no delegation payouts</dd>
+      </dl>
+      <p style="margin-top:18px"><button type="button" id="copy">Copy delegate address</button> <span id="copied" role="status"></span></p>
+    </section>
+    <section class="sheet" id="stake">
+      <div class="tag">Support modes</div>
+      <table>
+        <thead><tr><th>Mode</th><th>Terms</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">delegate</td><td>No ownership transfer. No payouts. <a href="../#delegate-with-wallet">Live panel →</a></td></tr>
+          <tr><td class="mono">stake</td><td>Protocol rewards, slashing risk, delays. In-wallet only. <a href="https://docs.tezos.com/using/staking" rel="noopener">Guide →</a></td></tr>
+          <tr><td class="mono" id="donate">donate</td><td>Permanent gift to baker stake. <a href="../#donate">Live panel →</a></td></tr>
+        </tbody>
+      </table>
+      <p class="note">Full wallet flows, live balances and the donations contract live on the main page.</p>
+    </section>
+  </div>
+  <div id="faq">
+  <details><summary>Q1 — Do delegators earn rewards?</summary><p>No. Delegation is patronage of development work.</p></details>
+  <details><summary>Q2 — Is the baker running?</summary><p>Yes — online with delegation open. No uptime or yield guarantees are made.</p></details>
+  </div>
+  <footer><span>sebuh.net · Preview 5 · Blueprint</span><a href="../">← live site</a></footer>
+</div>
+<script>document.getElementById('copy').addEventListener('click',async()=>{const t=document.getElementById('addr').textContent;try{await navigator.clipboard.writeText(t);document.getElementById('copied').textContent=' Copied.';}catch{document.getElementById('copied').textContent=' Copy manually.';}});</script>
+</body>
+</html>

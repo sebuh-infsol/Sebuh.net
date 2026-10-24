@@ -21,7 +21,7 @@ test('support page discloses no payouts before the delegate address', () => {
   const html = readFileSync(new URL('index.html', root), 'utf8');
   assert.match(html, /No delegation reward payouts/);
   assert.ok(html.indexOf('No delegation reward payouts') < html.indexOf('tz1R664EP6wjcM1RSUVJ7nrJisTpBW9QyJzP'));
-  assert.match(html, /Restart in progress/);
+  assert.match(html, /Baker online/);
   assert.match(html, /not an investment or a promise of yield/);
   assert.match(html, /Direct staking is different/);
   assert.doesNotMatch(html, /guaranteed return|earn \d+%|localhost:8732|127\.0\.0\.1:8732|inMemorySigner/i);

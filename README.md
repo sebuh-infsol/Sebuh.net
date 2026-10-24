@@ -13,8 +13,13 @@ imported. The public site has no connection to the private baker control plane.
   does not set or modify that commission and makes no zero-fee promise.
 - Ordinary delegation does not transfer ownership of funds. Direct staking has
   different slashing and withdrawal rules, explained separately on the page.
-- The baker is restarting. No live uptime, baking-rights, APY or reward claims
-  are made. Update the status copy deliberately when the underlying facts change.
+- The baker is online, with delegation open. No live uptime, baking-rights, APY
+  or reward claims are made. Update the status copy deliberately when the
+  underlying facts change.
+- Five static design previews live under `site/preview1/` … `site/preview5/`
+  (broadsheet, terminal, ember editorial, evergreen, blueprint). Each is a
+  self-contained page with its own nav bar cross-linking the others and the
+  live site; they carry no wallet code and make no live claims.
 
 The delegate address is public. No credentials, hardware references, keys, private
 RPC addresses or management controls belong in this repository or Worker.
